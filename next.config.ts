@@ -15,10 +15,16 @@ const nextConfig: NextConfig = {
         hostname: "fastly.picsum.photos",
       },
       {
-        // Uploaded product images served by the NestJS backend.
+        // Uploaded product images served by the NestJS backend (local dev).
         protocol: "http",
         hostname: "localhost",
         port: "3001",
+        pathname: "/uploads/**",
+      },
+      {
+        // Uploaded product images served by the NestJS backend (production).
+        protocol: "https",
+        hostname: "api.medianoche.com.gt",
         pathname: "/uploads/**",
       },
     ],
