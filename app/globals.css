@@ -1,26 +1,50 @@
 @import "tailwindcss";
 
+/* Medianoche — warm midnight theme (brand palette) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #17150f; /* negro cálido */
+  --surface: #201c15; /* superficie */
+  --surface-2: #2c2820; /* superficie elevada / inputs */
+  --border: #3d372e; /* bordes */
+  --foreground: #f3ebdd; /* crema */
+  --muted: #a99e8b; /* texto secundario (topo claro) */
+  --accent: #bc5632; /* terracota */
+  --accent-hover: #d26b41; /* terracota (hover) */
+  --accent-foreground: #f7f1e7; /* texto sobre terracota */
+  --olive: #6a6e40; /* oliva */
+  --navy: #2b384a; /* azul noche */
+  --sand: #d5c4a6; /* arena */
+  --danger: #cf5b4e; /* rojo (acciones destructivas) */
+  --success: #7c8b4e; /* verde oliva (éxito) */
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-olive: var(--olive);
+  --color-navy: var(--navy);
+  --color-sand: var(--sand);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-serif: var(--font-playfair);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Thin, theme-aware scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
 }

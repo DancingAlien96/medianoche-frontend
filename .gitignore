@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# heavy/unused media not needed in the repo
+/public/*.mp4
+/public/*.pdf

@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Medianoche · Hero</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;background:#050505;overflow:hidden;
+    font-family:"Georgia","Times New Roman",serif;color:#e8e2d4}
+  .hero{position:fixed;inset:0;overflow:hidden;background:#050505}
+
+  /* canvas-space stage (1536x1024) scaled to cover the viewport */
+  .stage{position:absolute;top:0;left:0;width:1536px;height:1024px;
+    transform-origin:0 0;will-change:transform}
+  .bg{position:absolute;inset:0;width:1536px;height:1024px;object-fit:cover;
+    will-change:transform,opacity;transform-origin:50% 46%}
+  .watch{position:absolute;left:773px;top:512px;width:391px;height:650px;
+    will-change:transform,opacity;transform:translate(-50%,-50%);
+    filter:drop-shadow(0 30px 60px rgba(0,0,0,.6))}
+
+  /* light fx (canvas coords) */
+  .seam{position:absolute;left:330px;top:612px;width:850px;height:70px;
+    background:radial-gradient(ellipse 50% 50% at 50% 50%,
+      rgba(255,205,120,.95),rgba(255,175,70,.35) 45%,transparent 72%);
+    filter:blur(9px);transform-origin:50% 50%;opacity:0;mix-blend-mode:screen}
+  .glow{position:absolute;left:773px;top:505px;width:1100px;height:1100px;
+    transform:translate(-50%,-50%);border-radius:50%;
+    background:radial-gradient(circle at 50% 50%,
+      rgba(255,198,110,.85),rgba(255,170,70,.32) 30%,rgba(180,120,40,.10) 52%,transparent 66%);
+    filter:blur(6px);opacity:0;mix-blend-mode:screen}
+  .rays{position:absolute;left:773px;top:505px;width:1500px;height:1500px;
+    transform:translate(-50%,-50%) rotate(0deg);opacity:0;mix-blend-mode:screen;
+    background:repeating-conic-gradient(from 0deg at 50% 50%,
+      rgba(255,210,130,.0) 0deg,rgba(255,210,130,.28) 2deg,rgba(255,210,130,0) 5deg,
+      rgba(255,210,130,0) 11deg);
+    -webkit-mask-image:radial-gradient(circle at 50% 50%,#000 6%,transparent 60%);
+            mask-image:radial-gradient(circle at 50% 50%,#000 6%,transparent 60%)}
+  #dust{position:absolute;inset:0;width:1536px;height:1024px;pointer-events:none;
+    mix-blend-mode:screen}
+
+  /* full-screen overlays (viewport space) */
+  .vignette{position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(120% 100% at 50% 44%,transparent 42%,rgba(0,0,0,.72) 100%);
+    opacity:.35}
+  .grain{position:absolute;inset:0;pointer-events:none;opacity:.06;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}
+
+  .topscrim{position:absolute;left:0;right:0;top:0;height:26vh;pointer-events:none;
+    background:linear-gradient(rgba(0,0,0,.6),transparent);opacity:0}
+  /* brand overlay */
+  .brand{position:absolute;left:0;right:0;top:4.5vh;text-align:center;opacity:0;
+    will-change:opacity,transform}
+  .brand .moon{width:34px;height:34px;margin:0 auto 10px;display:block}
+  .brand h1{font-size:clamp(26px,3vw,40px);font-weight:400;letter-spacing:.04em;
+    color:#e9c98a;text-shadow:0 2px 18px rgba(0,0,0,.6)}
+  .brand p{margin-top:6px;font-size:clamp(10px,1vw,12px);letter-spacing:.42em;
+    text-transform:uppercase;color:#c9a86a;font-family:-apple-system,Helvetica,Arial,sans-serif}
+  .cue{position:absolute;left:0;right:0;bottom:5.5vh;text-align:center;opacity:0;
+    color:#b7a988;font-size:11px;letter-spacing:.34em;text-transform:uppercase;
+    font-family:-apple-system,Helvetica,Arial,sans-serif}
+  .cue .ln{display:block;width:1px;height:38px;margin:12px auto 0;
+    background:linear-gradient(#b7a988,transparent);animation:cue 2s ease-in-out infinite}
+  @keyframes cue{0%{transform:scaleY(0);transform-origin:top}
+    45%{transform:scaleY(1);transform-origin:top}
+    55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+  .replay{position:absolute;right:18px;bottom:16px;z-index:9;opacity:0;transition:opacity .4s;
+    font-family:-apple-system,Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:.2em;
+    text-transform:uppercase;color:#9a8f76;border:1px solid #3a352b;border-radius:20px;
+    padding:8px 16px;background:rgba(0,0,0,.3);cursor:pointer;backdrop-filter:blur(4px)}
+  .replay.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="stage" id="stage">
+    <img class="bg" id="bgInicio" src="Inicio.png" alt="">
+    <img class="bg" id="bgMedio"  src="Medio.png"  alt="" style="opacity:0">
+    <img class="bg" id="bgFin"    src="Fin.png"    alt="" style="opacity:0">
+    <div class="seam" id="seam"></div>
+    <div class="rays" id="rays"></div>
+    <div class="glow" id="glow"></div>
+    <img class="watch" id="watch" src="hero_layers/watch_fin.png" alt="" style="opacity:0">
+    <canvas id="dust" width="1536" height="1024"></canvas>
+  </div>
+
+  <div class="vignette" id="vig"></div>
+  <div class="grain"></div>
+  <div class="topscrim" id="topscrim"></div>
+
+  <div class="brand" id="brand">
+    <svg class="moon" viewBox="0 0 100 100"><path d="M64 8a44 44 0 1 0 28 78A38 38 0 0 1 64 8z" fill="#e9c98a"/></svg>
+    <h1>Medianoche</h1>
+    <p>Lleva autenticidad</p>
+  </div>
+  <div class="cue" id="cue">Desliza<span class="ln"></span></div>
+</div>
+
+<script>
+(function(){
+  const CW=1536, CH=1024;
+  const stage=document.getElementById('stage');
+  const bgI=document.getElementById('bgInicio'), bgM=document.getElementById('bgMedio'), bgF=document.getElementById('bgFin');
+  const seam=document.getElementById('seam'), glow=document.getElementById('glow'), rays=document.getElementById('rays');
+  const watch=document.getElementById('watch'), vig=document.getElementById('vig');
+  const brand=document.getElementById('brand'), cue=document.getElementById('cue');
+  const topscrim=document.getElementById('topscrim');
+  const dust=document.getElementById('dust'), dctx=dust.getContext('2d');
+
+  const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+  const lerp=(a,b,t)=>a+(b-a)*t;
+  const ease=t=>t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;       // easeInOutCubic
+  const easeOut=t=>1-Math.pow(1-t,3);
+  const smooth=t=>t*t*(3-2*t);
+  // normalized progress within [a,b]
+  const seg=(t,a,b)=>clamp((t-a)/(b-a),0,1);
+
+  // ---- timeline (seconds) ----
+  const TL={
+    push:   [0.0, 2.2],
+    seam:   [0.5, 2.3],
+    open:   [1.9, 3.0],     // Inicio -> Medio
+    bloom:  [1.9, 3.1],
+    rays:   [2.0, 5.6],
+    watch:  [2.4, 5.9],     // emerge + grow to Fin-aligned
+    dust:   [2.2, 8.0],
+    fin:    [4.2, 5.7],     // Medio -> Fin
+    watchOut:[5.5, 6.1],
+    vig:    [4.4, 6.4],
+    brand:  [6.0, 7.4],
+    cue:    [6.4, 7.6]
+  };
+  const END=7.8;
+
+  // contain scaling: fit the whole 1536x1024 stage (black bars blend with the bg)
+  function resize(){
+    const s=Math.min(innerWidth/CW, innerHeight/CH);
+    const x=(innerWidth-CW*s)/2, y=(innerHeight-CH*s)/2;
+    stage.style.transform=`translate(${x}px,${y}px) scale(${s})`;
+  }
+  addEventListener('resize',resize); resize();
+
+  // deterministic dust motes
+  const N=70, motes=[];
+  const rnd=(i,s)=>{const x=Math.sin(i*127.1+s*311.7)*43758.5453; return x-Math.floor(x);};
+  for(let i=0;i<N;i++) motes.push({
+    x:lerp(430,1130,rnd(i,1)), y0:lerp(560,760,rnd(i,2)),
+    r:lerp(0.8,2.6,rnd(i,3)), sp:lerp(26,70,rnd(i,4)),
+    ph:rnd(i,5)*6.28, amp:lerp(6,26,rnd(i,6)), life:lerp(2.4,4.2,rnd(i,7))
+  });
+  function drawDust(t, amt){
+    dctx.clearRect(0,0,CW,CH);
+    if(amt<=0.01) return;
+    const t0=TL.dust[0];
+    for(let i=0;i<N;i++){
+      const m=motes[i];
+      const local=((t-t0 + m.ph*0.6) % m.life)/m.life;      // 0..1 loop
+      const y=m.y0 - local*m.sp*m.life;
+      const x=m.x + Math.sin(local*6.28 + m.ph)*m.amp;
+      const fade=Math.sin(local*Math.PI);                    // in/out
+      const a=fade*amt*0.8;
+      if(a<=0) continue;
+      const g=dctx.createRadialGradient(x,y,0,x,y,m.r*3);
+      g.addColorStop(0,`rgba(255,214,140,${a})`);
+      g.addColorStop(1,'rgba(255,214,140,0)');
+      dctx.fillStyle=g;
+      dctx.beginPath(); dctx.arc(x,y,m.r*3,0,6.2832); dctx.fill();
+    }
+  }
+
+  function render(t){
+    // background Ken Burns + crossfades
+    const pOpen=seg(t,...TL.open), pFin=seg(t,...TL.fin);
+    // Inicio: push-in
+    const pi=seg(t,...TL.push);
+    bgI.style.transform=`scale(${lerp(1.0,1.07,easeOut(pi))})`;
+    bgI.style.opacity=(1-ease(pOpen)).toFixed(3);
+    // Medio: comes in as box opens, gentle pull then push
+    const pm=seg(t,0.0,6.0);
+    bgM.style.opacity=(ease(pOpen)*(1-ease(pFin))).toFixed(3);
+    bgM.style.transform=`scale(${lerp(1.06,1.12,smooth(clamp((t-1.9)/3.5,0,1)))})`;
+    // Fin: settles as hero
+    bgF.style.opacity=ease(pFin).toFixed(3);
+    bgF.style.transform=`scale(${lerp(1.08,1.0,easeOut(pFin))})`;
+
+    // seam glow (grows along the lid, then blooms out)
+    const ps=seg(t,...TL.seam), pb=seg(t,...TL.bloom);
+    seam.style.opacity=(Math.sin(clamp(ps,0,1)*Math.PI*0.9)* (1-pb)).toFixed(3);
+    seam.style.transform=`scaleX(${lerp(0.15,1.0,easeOut(ps))}) scaleY(${lerp(0.5,1,ps)})`;
+
+    // radial bloom + aura
+    const pbl=seg(t,...TL.bloom);
+    const aura=0.16*ease(seg(t,3.0,5.5))*(1-0.5*ease(pFin));
+    glow.style.opacity=(Math.sin(pbl*Math.PI)*0.72 + aura).toFixed(3);
+    glow.style.transform=`translate(-50%,-50%) scale(${lerp(0.3,1.05,easeOut(pbl))})`;
+
+    // god rays
+    const pr=seg(t,...TL.rays);
+    rays.style.opacity=(Math.sin(clamp(pr,0,1)*Math.PI)*0.34).toFixed(3);
+    rays.style.transform=`translate(-50%,-50%) rotate(${lerp(-8,8,pr)}deg) scale(${lerp(0.6,1.15,pr)})`;
+
+    // watch emerge -> grow -> align to Fin
+    const pw=ease(seg(t,...TL.watch));
+    const dx=lerp(6,0,pw), dy=lerp(-6,0,pw), sc=lerp(0.60,1.0,pw);
+    const appear=seg(t,TL.watch[0],TL.watch[0]+0.7);
+    const outp=seg(t,...TL.watchOut);
+    watch.style.opacity=(appear*(1-outp)).toFixed(3);
+    watch.style.transform=`translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(${sc})`;
+
+    // dust
+    drawDust(t, ease(seg(t,TL.dust[0],TL.dust[0]+1.0))*(1-0.7*ease(pFin)));
+
+    // vignette deepen
+    vig.style.opacity=lerp(0.30,0.62,ease(seg(t,...TL.vig))).toFixed(3);
+
+    // brand + cue
+    const pB=seg(t,...TL.brand);
+    brand.style.opacity=easeOut(pB).toFixed(3);
+    brand.style.transform=`translateY(${lerp(14,0,easeOut(pB))}px)`;
+    topscrim.style.opacity=(easeOut(pB)*0.9).toFixed(3);
+    cue.style.opacity=easeOut(seg(t,...TL.cue)).toFixed(3);
+  }
+
+  // infinite loop: play, linger on the hero, then crossfade and restart
+  const HOLD=2.6, FADE=0.7, CYCLE=END+HOLD;
+  const heroEl=document.querySelector('.hero');
+  heroEl.style.transition='opacity '+FADE+'s ease';
+  let t0=performance.now();
+  function loop(now){
+    let e=(now-t0)/1000;
+    if(e>=CYCLE){ t0=now; e=0; }
+    const t = e<END ? e : END;                        // play, then hold on the hero
+    heroEl.style.opacity = (e > CYCLE-FADE) ? '0' : '1';   // hide the seam of the restart
+    render(t);
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
