@@ -68,12 +68,6 @@ export default function LoginPage() {
           Regístrate
         </Link>
       </p>
-
-      <p className="text-xs text-muted text-center rounded-lg border border-border bg-surface p-3">
-        Cuenta demo: <br />
-        <span className="text-foreground">demo@medianoche.com</span> /{" "}
-        <span className="text-foreground">password123</span>
-      </p>
     </div>
   );
 }
