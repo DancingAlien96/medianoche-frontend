@@ -1,7 +1,13 @@
+import { ArrowRight, Moon } from "lucide-react";
+import Link from "next/link";
 import { CategoryFilter } from "@/components/category-filter";
 import { Pagination } from "@/components/pagination";
 import { ProductCard } from "@/components/product-card";
+import { TrustBand } from "@/components/trust-band";
+import { WhatsappCta } from "@/components/whatsapp-cta";
 import { getCategories, getProducts } from "@/lib/api";
+
+const WHATSAPP_URL = "https://wa.me/50233407786";
 
 interface HomePageProps {
   searchParams: Promise<{ q?: string; category?: string; page?: string }>;
@@ -16,50 +22,101 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     getProducts({ q, category, page: currentPage, limit: 12 }),
   ]);
 
-  // Show the cinematic hero only on the clean landing (not while searching/filtering).
   const showHero = !q && !category && currentPage === 1;
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col">
       {showHero && (
-        <div className="relative left-1/2 -translate-x-1/2 w-screen -mt-8 overflow-hidden">
-          <iframe
-            src="/hero/index.html"
-            title="Medianoche"
-            className="block w-full border-0 aspect-[3/2] min-h-[70svh] max-h-[100svh]"
-          />
-        </div>
+        <>
+          {/* Minimal centered hero */}
+          <section className="flex flex-col items-center text-center gap-8 pt-8 pb-16 md:pt-14 md:pb-24">
+            <Moon
+              className="w-14 h-14 text-accent"
+              fill="currentColor"
+              strokeWidth={1}
+            />
+            <div className="flex flex-col items-center gap-3">
+              <h1 className="font-serif text-4xl md:text-6xl tracking-tight">
+                Medianoche
+              </h1>
+              <p className="text-xs md:text-sm uppercase tracking-[0.35em] text-gold">
+                Relojes · Accesorios · Perfumes
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <a
+                href="#catalogo"
+                className="rounded-md bg-accent text-accent-foreground px-8 py-3.5 text-sm font-medium uppercase tracking-wide hover:bg-accent-hover transition-colors"
+              >
+                Ver colección
+              </a>
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-md border border-foreground/25 px-8 py-3.5 text-sm font-medium uppercase tracking-wide hover:border-foreground transition-colors"
+              >
+                Contáctanos
+              </a>
+            </div>
+          </section>
+
+          <TrustBand />
+        </>
       )}
 
-      <section>
-        <h1 className="font-serif text-3xl">
-          {q ? `Resultados para “${q}”` : "Catálogo"}
-        </h1>
-        <p className="text-muted mt-1">
-          {products.total} {products.total === 1 ? "producto" : "productos"}
-        </p>
+      <section id="catalogo" className="pt-12 flex flex-col gap-8 scroll-mt-20">
+        <div className="text-center">
+          <h2 className="font-serif text-2xl md:text-3xl uppercase tracking-[0.14em]">
+            {q ? `Resultados para “${q}”` : "Piezas disponibles"}
+          </h2>
+          <p className="text-muted mt-2 text-sm">
+            {products.total} {products.total === 1 ? "pieza" : "piezas"}
+          </p>
+        </div>
+
+        <CategoryFilter categories={categories} active={category} q={q} />
+
+        {products.items.length === 0 ? (
+          <p className="text-muted py-16 text-center">
+            No se encontraron piezas.
+          </p>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
+            {products.items.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
+
+        <Pagination
+          page={products.page}
+          totalPages={products.totalPages}
+          q={q}
+          category={category}
+        />
       </section>
 
-      <CategoryFilter categories={categories} active={category} q={q} />
+      {showHero && (
+        <>
+          <section className="text-center py-20 max-w-2xl mx-auto flex flex-col items-center gap-6">
+            <p className="text-lg leading-relaxed text-muted">
+              En Medianoche seleccionamos relojes originales, accesorios con
+              carácter y detalles que complementan tu estilo con elegancia y
+              autenticidad.
+            </p>
+            <a
+              href="/anatomia/index.html"
+              className="inline-flex items-center gap-2 text-sm uppercase tracking-[0.14em] font-medium hover:text-accent transition-colors"
+            >
+              Descubre la anatomía de un reloj
+              <ArrowRight className="w-4 h-4" />
+            </a>
+          </section>
 
-      {products.items.length === 0 ? (
-        <p className="text-muted py-16 text-center">
-          No se encontraron productos.
-        </p>
-      ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {products.items.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+          <WhatsappCta />
+        </>
       )}
-
-      <Pagination
-        page={products.page}
-        totalPages={products.totalPages}
-        q={q}
-        category={category}
-      />
     </div>
   );
 }

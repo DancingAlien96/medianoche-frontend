@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 
 const geistSans = Geist({
@@ -39,9 +40,7 @@ export default function RootLayout({
         <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 py-8">
           {children}
         </main>
-        <footer className="border-t border-border py-6 text-center text-sm text-muted">
-          © 2026 Medianoche. Todos los derechos reservados.
-        </footer>
+        <Footer />
       </body>
     </html>
   );

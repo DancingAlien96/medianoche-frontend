@@ -1,21 +1,20 @@
 @import "tailwindcss";
 
-/* Medianoche — warm midnight theme (brand palette) */
+/* Medianoche — light luxury theme (white / black / gold) */
 :root {
-  --background: #17150f; /* negro cálido */
-  --surface: #201c15; /* superficie */
-  --surface-2: #2c2820; /* superficie elevada / inputs */
-  --border: #3d372e; /* bordes */
-  --foreground: #f3ebdd; /* crema */
-  --muted: #a99e8b; /* texto secundario (topo claro) */
-  --accent: #bc5632; /* terracota */
-  --accent-hover: #d26b41; /* terracota (hover) */
-  --accent-foreground: #f7f1e7; /* texto sobre terracota */
-  --olive: #6a6e40; /* oliva */
-  --navy: #2b384a; /* azul noche */
-  --sand: #d5c4a6; /* arena */
-  --danger: #cf5b4e; /* rojo (acciones destructivas) */
-  --success: #7c8b4e; /* verde oliva (éxito) */
+  --background: #ffffff;
+  --surface: #ffffff; /* cards */
+  --surface-2: #f5f3ee; /* soft fills: image bg, inputs */
+  --border: #e7e2d7; /* hairline borders */
+  --foreground: #18140d; /* near-black, warm */
+  --muted: #857b6a; /* warm gray secondary text */
+  --accent: #17130e; /* primary (buttons/links) — near-black */
+  --accent-hover: #3a332a;
+  --accent-foreground: #ffffff; /* text on the black buttons */
+  --gold: #a8875a; /* small caps labels / refined accent */
+  --gold-soft: #bfa477;
+  --danger: #b23b30;
+  --success: #2f7d4f;
 }
 
 @theme inline {
@@ -28,9 +27,8 @@
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-accent-foreground: var(--accent-foreground);
-  --color-olive: var(--olive);
-  --color-navy: var(--navy);
-  --color-sand: var(--sand);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
   --color-danger: var(--danger);
   --color-success: var(--success);
   --font-sans: var(--font-geist-sans);
@@ -41,6 +39,8 @@
 body {
   background: var(--background);
   color: var(--foreground);
+  /* allow full-bleed bands (w-screen) without a horizontal scrollbar */
+  overflow-x: clip;
 }
 
 /* Thin, theme-aware scrollbars */
