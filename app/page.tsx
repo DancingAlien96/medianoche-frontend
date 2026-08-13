@@ -1,4 +1,4 @@
-import { ArrowRight, Moon } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { CategoryFilter } from "@/components/category-filter";
 import { Pagination } from "@/components/pagination";
@@ -28,21 +28,24 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     <div className="flex flex-col">
       {showHero && (
         <>
-          {/* Minimal centered hero */}
-          <section className="flex flex-col items-center text-center gap-8 pt-8 pb-16 md:pt-14 md:pb-24">
-            <Moon
-              className="w-14 h-14 text-accent"
-              fill="currentColor"
-              strokeWidth={1}
-            />
-            <div className="flex flex-col items-center gap-3">
-              <h1 className="font-serif text-4xl md:text-6xl tracking-tight">
-                Medianoche
-              </h1>
-              <p className="text-xs md:text-sm uppercase tracking-[0.35em] text-gold">
-                Relojes · Accesorios · Perfumes
-              </p>
-            </div>
+          {/* Minimal centered hero — animated brand logo */}
+          <section className="flex flex-col items-center text-center gap-6 pt-2 pb-16 md:pt-4 md:pb-24">
+            <h1 className="sr-only">
+              Medianoche — Relojes, accesorios y perfumes
+            </h1>
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              poster="/logo-animacion-poster.jpg"
+              aria-label="Medianoche"
+              className="w-full max-w-2xl"
+            >
+              <source src="/logo-animacion.webm" type="video/webm" />
+              <source src="/logo-animacion.mp4" type="video/mp4" />
+            </video>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <a
                 href="#catalogo"
