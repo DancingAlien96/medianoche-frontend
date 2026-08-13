@@ -28,24 +28,26 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     <div className="flex flex-col">
       {showHero && (
         <>
-          {/* Minimal centered hero — animated brand logo */}
-          <section className="flex flex-col items-center text-center gap-6 pt-2 pb-16 md:pt-4 md:pb-24">
+          {/* Full-width hero — animated brand logo */}
+          <section className="flex flex-col items-center text-center gap-8 pb-16 md:pb-24">
             <h1 className="sr-only">
               Medianoche — Relojes, accesorios y perfumes
             </h1>
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              poster="/logo-animacion-poster.jpg"
-              aria-label="Medianoche"
-              className="w-full max-w-2xl"
-            >
-              <source src="/logo-animacion.webm" type="video/webm" />
-              <source src="/logo-animacion.mp4" type="video/mp4" />
-            </video>
+            <div className="relative left-1/2 -translate-x-1/2 w-screen -mt-8">
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                poster="/logo-animacion-poster.jpg"
+                aria-label="Medianoche"
+                className="block w-full"
+              >
+                <source src="/logo-animacion.webm" type="video/webm" />
+                <source src="/logo-animacion.mp4" type="video/mp4" />
+              </video>
+            </div>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <a
                 href="#catalogo"
