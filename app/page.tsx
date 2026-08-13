@@ -29,11 +29,11 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       {showHero && (
         <>
           {/* Full-width hero — animated brand logo */}
-          <section className="flex flex-col items-center text-center gap-8 pb-16 md:pb-24">
+          <div className="pb-14 md:pb-24">
             <h1 className="sr-only">
               Medianoche — Relojes, accesorios y perfumes
             </h1>
-            <div className="relative left-1/2 -translate-x-1/2 w-screen -mt-8">
+            <div className="relative left-1/2 -translate-x-1/2 w-screen -mt-8 overflow-hidden">
               <video
                 autoPlay
                 muted
@@ -42,13 +42,13 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                 preload="auto"
                 poster="/logo-animacion-poster.jpg"
                 aria-label="Medianoche"
-                className="block w-full"
+                className="block w-full aspect-[4/3] object-cover object-center sm:aspect-auto"
               >
                 <source src="/logo-animacion.webm" type="video/webm" />
                 <source src="/logo-animacion.mp4" type="video/mp4" />
               </video>
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-3">
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-8">
               <a
                 href="#catalogo"
                 className="rounded-md bg-accent text-accent-foreground px-8 py-3.5 text-sm font-medium uppercase tracking-wide hover:bg-accent-hover transition-colors"
@@ -64,7 +64,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                 Contáctanos
               </a>
             </div>
-          </section>
+          </div>
 
           <TrustBand />
         </>
