@@ -94,3 +94,17 @@ export interface Order {
   updatedAt: string;
   user?: { name: string; email: string };
 }
+
+export type RequestStatus = "PENDING" | "CONTACTED" | "CLOSED";
+
+export interface SpecialRequest {
+  id: string;
+  name: string | null;
+  phone: string;
+  brand: string | null;
+  description: string;
+  photos: string[];
+  status: RequestStatus;
+  createdAt: string;
+  updatedAt: string;
+}

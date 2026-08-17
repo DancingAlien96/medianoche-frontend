@@ -29,6 +29,12 @@ export default async function AdminLayout({
         <Link href="/admin/pedidos" className="text-muted hover:text-foreground">
           Pedidos
         </Link>
+        <Link
+          href="/admin/requerimientos"
+          className="text-muted hover:text-foreground"
+        >
+          Requerimientos
+        </Link>
         <Link href="/" className="text-muted hover:text-foreground ml-auto">
           ← Ver tienda
         </Link>

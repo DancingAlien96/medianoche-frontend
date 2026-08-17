@@ -7,6 +7,8 @@ import type {
   PaymentMethod,
   Product,
   ProductsResponse,
+  RequestStatus,
+  SpecialRequest,
   User,
 } from "./types";
 
@@ -286,6 +288,24 @@ export function adminUpdateOrderStatus(
   status: OrderStatus,
 ): Promise<Order> {
   return apiFetch<Order>(`/admin/orders/${id}/status`, {
+    method: "PATCH",
+    token,
+    body: JSON.stringify({ status }),
+  });
+}
+
+/* ---------------- Special requests (admin) ---------------- */
+
+export function adminGetRequests(token: string): Promise<SpecialRequest[]> {
+  return apiFetch<SpecialRequest[]>("/admin/requests", { token });
+}
+
+export function adminUpdateRequestStatus(
+  token: string,
+  id: string,
+  status: RequestStatus,
+): Promise<SpecialRequest> {
+  return apiFetch<SpecialRequest>(`/admin/requests/${id}/status`, {
     method: "PATCH",
     token,
     body: JSON.stringify({ status }),

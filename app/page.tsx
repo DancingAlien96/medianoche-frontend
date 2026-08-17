@@ -29,26 +29,34 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     <div className="flex flex-col">
       {showHero && (
         <>
-          {/* Full-width hero — animated brand logo */}
-          <div className="pb-14 md:pb-24">
+          {/* Centered hero — animated brand logo */}
+          <div className="flex flex-col items-center text-center pt-6 pb-16 md:pt-10 md:pb-24">
             <h1 className="sr-only">
               Medianoche — Relojes, accesorios y perfumes
             </h1>
-            <div className="relative left-1/2 -translate-x-1/2 w-screen -mt-8 overflow-hidden">
-              <MediaNocheLogo className="w-full" loopSecs={60} spinTurns={1} />
-            </div>
-            <div className="flex flex-wrap items-center justify-center gap-3 pt-8">
+            <MediaNocheLogo
+              className="w-full max-w-lg"
+              loopSecs={60}
+              spinTurns={1}
+            />
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-10">
+              <Link
+                href="/requerimiento"
+                className="rounded-md bg-accent text-accent-foreground px-7 py-3.5 text-sm font-medium uppercase tracking-wide hover:bg-accent-hover transition-colors"
+              >
+                Requerimiento especial
+              </Link>
               <a
                 href="#catalogo"
-                className="rounded-md bg-accent text-accent-foreground px-8 py-3.5 text-sm font-medium uppercase tracking-wide hover:bg-accent-hover transition-colors"
+                className="rounded-md border border-foreground/25 px-7 py-3.5 text-sm font-medium uppercase tracking-wide hover:border-foreground transition-colors"
               >
-                Ver colección
+                Ver catálogo
               </a>
               <a
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-md border border-foreground/25 px-8 py-3.5 text-sm font-medium uppercase tracking-wide hover:border-foreground transition-colors"
+                className="rounded-md border border-foreground/25 px-7 py-3.5 text-sm font-medium uppercase tracking-wide hover:border-foreground transition-colors"
               >
                 Contáctanos
               </a>
