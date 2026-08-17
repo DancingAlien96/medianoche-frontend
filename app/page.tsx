@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { CategoryFilter } from "@/components/category-filter";
+import { MediaNocheLogo } from "@/components/media-noche-logo";
 import { Pagination } from "@/components/pagination";
 import { ProductCard } from "@/components/product-card";
 import { TrustBand } from "@/components/trust-band";
@@ -34,19 +35,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               Medianoche — Relojes, accesorios y perfumes
             </h1>
             <div className="relative left-1/2 -translate-x-1/2 w-screen -mt-8 overflow-hidden">
-              <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                poster="/logo-animacion-poster.jpg"
-                aria-label="Medianoche"
-                className="block w-full aspect-[4/3] object-cover object-center sm:aspect-auto"
-              >
-                <source src="/logo-animacion.webm" type="video/webm" />
-                <source src="/logo-animacion.mp4" type="video/mp4" />
-              </video>
+              <MediaNocheLogo className="w-full" loopSecs={11} spinTurns={1} />
             </div>
             <div className="flex flex-wrap items-center justify-center gap-3 pt-8">
               <a
