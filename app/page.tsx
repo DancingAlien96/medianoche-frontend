@@ -35,7 +35,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               Medianoche — Relojes, accesorios y perfumes
             </h1>
             <div className="relative left-1/2 -translate-x-1/2 w-screen -mt-8 overflow-hidden">
-              <MediaNocheLogo className="w-full" loopSecs={11} spinTurns={1} />
+              <MediaNocheLogo className="w-full" loopSecs={60} spinTurns={1} />
             </div>
             <div className="flex flex-wrap items-center justify-center gap-3 pt-8">
               <a

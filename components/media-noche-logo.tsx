@@ -85,7 +85,6 @@ export function MediaNocheLogo({
   const spin = easeInOutCubic(s);
   const minAngle = BASE_MIN - 90 + spin * 360 * spinTurns;
   const hourAngle = BASE_HOUR - 90 + spin * 360;
-  const zoom = 1 + 0.02 * Math.sin(p * Math.PI * 2);
   const scale = boxW ? boxW / W : 0;
 
   const hand = (
@@ -124,7 +123,7 @@ export function MediaNocheLogo({
           width: W,
           height: H,
           transformOrigin: "0 0",
-          transform: `scale(${scale}) scale(${zoom})`,
+          transform: `scale(${scale})`,
           willChange: "transform",
         }}
       >
