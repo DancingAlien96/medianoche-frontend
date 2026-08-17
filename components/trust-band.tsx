@@ -1,20 +1,20 @@
-import { BadgeCheck, MessageCircle, ShieldCheck } from "lucide-react";
+import { ShieldCheck, Sparkles, Truck } from "lucide-react";
 
 const items = [
   {
+    icon: Truck,
+    title: "Envíos a todo Guatemala",
+    text: "Recibe tu compra donde estés, con opciones de envío rápidas y seguras.",
+  },
+  {
     icon: ShieldCheck,
-    title: "Autenticidad garantizada",
-    text: "Cada pieza es seleccionada y verificada antes de ofrecerse.",
+    title: "Compra fácil y segura",
+    text: "Realiza tu pedido de forma sencilla y recibe acompañamiento durante todo el proceso.",
   },
   {
-    icon: BadgeCheck,
-    title: "Piezas originales",
-    text: "Relojes, accesorios y perfumes auténticos.",
-  },
-  {
-    icon: MessageCircle,
-    title: "Atención personalizada",
-    text: "Te acompañamos en cada compra por WhatsApp.",
+    icon: Sparkles,
+    title: "Detalles que marcan la diferencia",
+    text: "Seleccionamos piezas que combinan estilo, calidad y personalidad para cada ocasión.",
   },
 ];
 
@@ -31,7 +31,7 @@ export function TrustBand() {
             <h3 className="text-sm uppercase tracking-[0.14em] font-semibold">
               {title}
             </h3>
-            <p className="text-sm text-muted max-w-[30ch]">{text}</p>
+            <p className="text-sm text-muted max-w-[32ch]">{text}</p>
           </div>
         ))}
       </div>
