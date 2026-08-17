@@ -34,9 +34,6 @@ const MASKS: [number, number, number, number][] = [
   [726, 600, 108, 116],
 ];
 
-const easeInOutCubic = (t: number) =>
-  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-
 interface Props {
   src?: string;
   loopSecs?: number;
@@ -80,11 +77,9 @@ export function MediaNocheLogo({
     return () => cancelAnimationFrame(raf.current);
   }, [loopSecs, paused]);
 
-  // spin starts ~20% into the loop and closes on the same pose (seamless loop)
-  const s = Math.min(1, Math.max(0, (p - 0.2) / 0.65));
-  const spin = easeInOutCubic(s);
-  const minAngle = BASE_MIN - 90 + spin * 360 * spinTurns;
-  const hourAngle = BASE_HOUR - 90 + spin * 360;
+  // constant, continuous rotation from the start (seamless: 360° = one full turn)
+  const minAngle = BASE_MIN - 90 + p * 360 * spinTurns;
+  const hourAngle = BASE_HOUR - 90 + p * 360;
   const scale = boxW ? boxW / W : 0;
 
   const hand = (
