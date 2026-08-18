@@ -21,7 +21,7 @@ const BASE_HOUR = -110; // original 10:10 pose
 
 // regions of the original art to hide: [x, y, w, h]
 const MASKS: [number, number, number, number][] = [
-  [300, 844, 940, 52],
+  [300, 805, 940, 95],
   [505, 120, 137, 545],
   [916, 120, 125, 278],
   [946, 398, 95, 62],
