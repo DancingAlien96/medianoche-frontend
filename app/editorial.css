@@ -93,8 +93,9 @@
   .ed .hero-in { grid-template-columns: 1fr; text-align: center; gap: 40px; padding-top: 56px; }
   .ed .hero-izq, .ed .hero-der { max-width: 100%; text-align: center; justify-self: center; }
   .ed .hero-der .bajada, .ed .bajada { margin: 0 auto; }
-  .ed .esfera { width: min(74vw, 340px); order: -1; }
-  .ed .acciones, .ed .hero-der .acciones { align-items: center; margin-top: 70px; }
+  /* Reserve room for the absolutely-positioned digital reading below the dial. */
+  .ed .esfera { width: min(74vw, 340px); order: -1; margin-bottom: 88px; }
+  .ed .acciones, .ed .hero-der .acciones { align-items: center; margin-top: 40px; }
   .ed .btn { width: min(320px, 86vw); }
 }
 
