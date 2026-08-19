@@ -16,7 +16,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <div className="flex flex-col gap-6">
-      <Link href="/" className="text-sm text-muted hover:text-foreground w-fit">
+      <Link
+        href="/catalogo"
+        className="text-sm text-muted hover:text-foreground w-fit"
+      >
         ← Volver al catálogo
       </Link>
 

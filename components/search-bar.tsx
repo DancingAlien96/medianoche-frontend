@@ -14,7 +14,9 @@ export function SearchBar() {
     const params = new URLSearchParams();
     const trimmed = value.trim();
     if (trimmed) params.set("q", trimmed);
-    router.push(params.toString() ? `/?${params.toString()}` : "/");
+    router.push(
+      params.toString() ? `/catalogo?${params.toString()}` : "/catalogo",
+    );
   }
 
   return (

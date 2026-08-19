@@ -1,558 +1,671 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Armani Exchange AX2145 — Anatomía</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anatomía del reloj — Medianoche</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Archivo:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#ffffff; --ink:#18140d; --muted:#857b6a; --accent:#a8875a;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --negro:#000;--papel:#fff;--humo:#F4F4F4;--gris:#8C8C8C;--linea:#E0E0E0;--linea-inv:rgba(255,255,255,.22);
+  --serif:'Bodoni Moda',Georgia,serif;--sans:'Archivo',system-ui,sans-serif;--mono:'Space Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--papel);color:var(--negro);font-family:var(--sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
+:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gris)}
+
+/* ---------- BARRA ---------- */
+.barra{position:sticky;top:0;z-index:60;background:var(--papel);border-bottom:1px solid var(--linea)}
+.barra-in{max-width:1320px;margin:0 auto;padding:0 28px;height:72px;display:flex;align-items:center;gap:32px}
+.marca{font-family:var(--serif);font-size:24px;letter-spacing:.06em;display:flex;align-items:center;gap:10px;white-space:nowrap}
+.buscar{flex:1;max-width:520px;display:flex;align-items:center;gap:10px;border:1px solid var(--linea);height:40px;padding:0 14px;transition:border-color .2s}
+.buscar:focus-within{border-color:var(--negro)}
+.buscar input{flex:1;border:none;outline:none;font:inherit;font-size:14px;background:none}
+.buscar input::placeholder{color:var(--gris)}
+.nav{margin-left:auto;display:flex;align-items:center;gap:26px;font-size:13px;letter-spacing:.04em}
+.nav a{position:relative;padding-bottom:2px}
+.nav a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--negro);transform:scaleX(0);transform-origin:right;transition:transform .3s cubic-bezier(.2,.7,.3,1)}
+.nav a:hover::after,.nav a.activo::after{transform:scaleX(1);transform-origin:left}
+.icono{display:flex;align-items:center;gap:6px}.icono .cuenta{font-family:var(--mono);font-size:11px}
+@media(max-width:980px){.buscar{display:none}}
+@media(max-width:620px){.nav a.oculta-movil{display:none}}
+
+/* ---------- PORTADILLA ---------- */
+.hoja{max-width:1320px;margin:0 auto;padding:0 28px}
+.miga{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gris);padding:26px 0 0}
+.miga a:hover{color:var(--negro)}
+.portadilla{display:grid;grid-template-columns:1.15fr 1fr;gap:56px;align-items:end;padding:16px 0 30px;border-bottom:1px solid var(--negro)}
+.portadilla h1{font-family:var(--serif);font-weight:400;font-size:clamp(38px,5.4vw,72px);line-height:.98;letter-spacing:-.015em}
+.portadilla h1 em{font-style:italic}
+.portadilla p{color:#3A3A3A;line-height:1.7;max-width:48ch}
+@media(max-width:900px){.portadilla{grid-template-columns:1fr;gap:22px;align-items:start}}
+
+/* ---------- NAVEGACIÓN INTERNA ---------- */
+.indice{position:sticky;top:72px;z-index:50;background:var(--papel);border-bottom:1px solid var(--linea)}
+.indice-in{max-width:1320px;margin:0 auto;padding:0 28px;display:flex;gap:0;overflow-x:auto}
+.indice a{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:16px 22px 15px;border-bottom:1px solid transparent;white-space:nowrap;color:var(--gris);transition:color .25s,border-color .25s}
+.indice a:first-child{padding-left:0}
+.indice a:hover,.indice a.activo{color:var(--negro);border-bottom-color:var(--negro)}
+
+/* ---------- BLOQUE DE DIAGRAMA ---------- */
+.seccion{max-width:1320px;margin:0 auto;padding:76px 28px}
+.rotulo{display:flex;align-items:baseline;gap:18px;margin-bottom:8px}
+.rotulo .num{font-family:var(--mono);font-size:11px;color:var(--gris);letter-spacing:.16em}
+.rotulo h2{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3.6vw,44px);letter-spacing:-.01em}
+.entrada{color:var(--gris);max-width:56ch;margin-bottom:40px;font-size:14px;line-height:1.7}
+
+.taller{display:grid;grid-template-columns:1fr 380px;gap:56px;align-items:start}
+@media(max-width:1000px){.taller{grid-template-columns:1fr;gap:34px}}
+
+.plano{border:1px solid var(--linea);background:var(--humo);padding:28px;position:relative}
+.plano::before{content:attr(data-rotulo);position:absolute;top:14px;left:16px;font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gris)}
+.plano svg{width:100%;height:auto;display:block;max-height:640px}
+
+/* piezas interactivas */
+.pieza{cursor:pointer}
+.pieza .cuerpo{fill:none;stroke:var(--negro);stroke-width:1.1;vector-effect:non-scaling-stroke;transition:stroke-width .2s,opacity .2s}
+.pieza .relleno{fill:var(--negro);opacity:0;transition:opacity .25s}
+.pieza .punto{fill:var(--papel);stroke:var(--negro);stroke-width:1;transition:fill .22s,stroke-width .22s}
+.pieza .cifra{font-family:var(--mono);font-size:9px;fill:var(--negro);text-anchor:middle;dominant-baseline:central;pointer-events:none;transition:fill .22s}
+.pieza .guia{stroke:var(--negro);stroke-width:.6;opacity:.3;stroke-dasharray:2 3}
+.pieza:hover .punto,.pieza.activa .punto{fill:var(--negro);stroke-width:1.4}
+.pieza:hover .cifra,.pieza.activa .cifra{fill:var(--papel)}
+.pieza.activa .cuerpo{stroke-width:2.4}
+.pieza.activa .relleno{opacity:.07}
+.pieza:focus{outline:none}
+.pieza:focus-visible .punto{stroke-width:2.6}
+.fijo{fill:none;stroke:var(--negro);stroke-width:.9;vector-effect:non-scaling-stroke;opacity:.4}
+.fijo-lleno{fill:var(--negro);opacity:.25}
+
+/* volante en oscilación: el único movimiento de la página */
+@keyframes oscilar{0%,100%{transform:rotate(-32deg)}50%{transform:rotate(32deg)}}
+#volante{transform-origin:190px 300px;animation:oscilar 1.6s ease-in-out infinite}
+#rotor{transform-origin:190px 190px;animation:girar 14s linear infinite}
+@keyframes girar{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+/* ---------- FICHA ---------- */
+.ficha{position:sticky;top:150px;border-top:1px solid var(--negro);padding-top:22px;min-height:340px}
+.ficha .indicador{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gris);margin-bottom:16px}
+.ficha h3{font-family:var(--serif);font-weight:400;font-size:30px;line-height:1.12;margin-bottom:6px}
+.ficha .alias{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gris);margin-bottom:20px}
+.ficha p{line-height:1.72;color:#2A2A2A;margin-bottom:18px}
+.ficha .dato{border-left:1px solid var(--negro);padding:2px 0 2px 16px;font-size:13px;line-height:1.65;color:#3A3A3A}
+.ficha .dato strong{font-weight:600}
+.lista-piezas{margin-top:26px;border-top:1px solid var(--linea);padding-top:16px;display:flex;flex-wrap:wrap;gap:6px}
+.lista-piezas button{font-family:var(--mono);font-size:10px;letter-spacing:.1em;border:1px solid var(--linea);padding:6px 9px;transition:border-color .2s,background .2s,color .2s}
+.lista-piezas button:hover{border-color:var(--negro)}
+.lista-piezas button.activa{background:var(--negro);color:var(--papel);border-color:var(--negro)}
+@media(max-width:1000px){.ficha{position:static;min-height:0}}
+
+/* ---------- DESARME ---------- */
+.desarme{background:var(--negro);color:var(--papel)}
+.desarme .seccion{padding-top:88px;padding-bottom:88px}
+.desarme .rotulo h2,.desarme h3{color:var(--papel)}
+.desarme .entrada{color:rgba(255,255,255,.6)}
+.desarme .rotulo .num{color:rgba(255,255,255,.45)}
+
+.aviso{border:1px solid var(--linea-inv);padding:22px 24px;margin-bottom:48px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;max-width:760px}
+.aviso p{color:rgba(255,255,255,.72);font-size:14px;line-height:1.65}
+.aviso strong{color:var(--papel)}
+
+.herramientas{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--linea-inv);border:1px solid var(--linea-inv);margin-bottom:56px}
+.herramienta{background:var(--negro);padding:20px 18px}
+.herramienta .h{font-size:13px;font-weight:500;margin-bottom:5px}
+.herramienta .d{font-size:12px;color:rgba(255,255,255,.55);line-height:1.55}
+
+.paso{display:grid;grid-template-columns:78px 1fr 300px;gap:32px;padding:30px 0;border-top:1px solid var(--linea-inv);align-items:start}
+.paso:last-child{border-bottom:1px solid var(--linea-inv)}
+.paso .p-num{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:rgba(255,255,255,.45);padding-top:4px}
+.paso h3{font-family:var(--serif);font-weight:400;font-size:25px;line-height:1.2;margin-bottom:10px}
+.paso p{color:rgba(255,255,255,.7);line-height:1.7;max-width:60ch}
+.paso .cuidado{margin-top:14px;font-size:13px;line-height:1.6;color:rgba(255,255,255,.9);border-left:1px solid rgba(255,255,255,.5);padding-left:14px}
+.paso .cuidado span{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5);display:block;margin-bottom:4px}
+.paso .lado{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.45);line-height:1.9;padding-top:6px}
+.paso .lado b{color:rgba(255,255,255,.8);font-weight:400}
+@media(max-width:960px){.paso{grid-template-columns:56px 1fr;gap:20px}.paso .lado{grid-column:2}}
+
+/* ---------- CIERRE ---------- */
+.cierre{text-align:center;padding:96px 28px;border-top:1px solid var(--linea)}
+.cierre h2{font-family:var(--serif);font-weight:400;font-size:clamp(28px,4vw,46px);line-height:1.14;margin:18px auto 16px;max-width:19ch}
+.cierre p{color:var(--gris);max-width:44ch;margin:0 auto 30px}
+.btn{display:inline-flex;align-items:center;justify-content:space-between;gap:28px;min-width:250px;height:52px;padding:0 22px;border:1px solid var(--negro);font-size:12px;letter-spacing:.16em;text-transform:uppercase;transition:background .28s,color .28s}
+.btn:hover{background:var(--negro);color:var(--papel)}
+.btn .flecha{transition:transform .28s cubic-bezier(.2,.7,.3,1)}
+.btn:hover .flecha{transform:translateX(6px)}
+
+.pie{background:var(--negro);color:rgba(255,255,255,.6);font-size:12px}
+.pie-in{max-width:1320px;margin:0 auto;padding:30px 28px;display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;align-items:center}
+.pie a:hover{color:var(--papel)}
+.pie-links{display:flex;gap:22px}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
   html{scroll-behavior:auto}
-  body{
-    background:var(--bg); color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-    -webkit-font-smoothing:antialiased; overflow-x:hidden;
-  }
-  a{color:inherit}
-
-  /* soft global vignette matching the source photography */
-  .vignette{position:fixed;inset:0;pointer-events:none;z-index:60;
-    background:radial-gradient(120% 90% at 50% 42%, transparent 60%, rgba(0,0,0,.05) 100%);}
-
-  /* ---------- HERO ---------- */
-  .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:6vh 6vw}
-  .hero img{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-    height:86vh;max-width:none;object-fit:contain;filter:drop-shadow(0 26px 50px rgba(0,0,0,.20));
-    animation:floaty 9s ease-in-out infinite}
-  @keyframes floaty{0%,100%{transform:translate(-50%,-51%)}50%{transform:translate(-50%,-49%)}}
-  .hero .top{position:relative;z-index:2;margin-top:-4vh}
-  .hero .eyebrow{font-size:clamp(11px,1.3vw,13px);letter-spacing:.32em;text-transform:uppercase;
-    color:var(--muted);margin-bottom:14px}
-  .hero h1{position:relative;z-index:2;font-weight:600;letter-spacing:-.02em;
-    font-size:clamp(30px,6vw,64px);line-height:1.03}
-  .hero h1 span{display:block;color:var(--muted);font-weight:400;font-size:.5em;letter-spacing:.01em;margin-top:.5em}
-  .hero .cue{position:absolute;bottom:4vh;left:50%;transform:translateX(-50%);z-index:2;
-    display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--muted);
-    font-size:11px;letter-spacing:.28em;text-transform:uppercase}
-  .hero .cue .bar{width:1px;height:44px;background:linear-gradient(var(--muted),transparent);
-    animation:drop 1.9s ease-in-out infinite}
-  @keyframes drop{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}
-    55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
-
-  /* ---------- TEARDOWN ---------- */
-  .teardown{position:relative;height:560vh}
-  .stage{position:sticky;top:0;height:100svh;overflow:hidden}
-  .canvas{position:absolute;top:0;left:0;
-    width:864px;height:1821px;transform-origin:0 0;will-change:transform}
-  .layer{position:absolute;will-change:transform,opacity;transform-origin:center center;
-    filter:drop-shadow(0 18px 30px rgba(0,0,0,.55))}
-  /* real assembled front photo, cross-fades into the 3D stack as it explodes */
-  .hero3d{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-    height:88svh;max-width:none;object-fit:contain;z-index:50;pointer-events:none;
-    filter:drop-shadow(0 26px 50px rgba(0,0,0,.20));will-change:opacity,transform}
-
-  /* labels overlay (screen space, crisp) */
-  .labels{position:absolute;inset:0;pointer-events:none;z-index:40}
-  .label{position:absolute;transform:translateY(-50%);display:flex;align-items:center;gap:9px;
-    opacity:0;transition:opacity .25s ease;white-space:nowrap}
-  .label.left{flex-direction:row-reverse}
-  .label .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex:none;
-    box-shadow:0 0 0 4px rgba(0,0,0,.06)}
-  .label .ln{width:34px;height:1px;background:linear-gradient(90deg,var(--ink),transparent)}
-  .label.left .ln{background:linear-gradient(90deg,transparent,var(--ink))}
-  .label .tx{font-size:12.5px;letter-spacing:.02em;color:var(--ink);
-    text-shadow:0 1px 10px rgba(255,255,255,.95)}
-  .label .tx small{display:block;color:var(--muted);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase}
-
-  /* caption + progress */
-  .caption{position:absolute;left:0;right:0;bottom:5.5svh;z-index:45;text-align:center;
-    pointer-events:none;padding:0 8vw}
-  .caption .k{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);
-    transition:opacity .4s ease}
-  .caption .t{margin-top:8px;font-size:clamp(17px,2.4vw,24px);font-weight:500;letter-spacing:-.01em;
-    transition:opacity .4s ease}
-  .progress{position:absolute;left:50%;bottom:2.6svh;transform:translateX(-50%);z-index:45;
-    width:min(220px,46vw);height:2px;background:rgba(0,0,0,.12);border-radius:2px;overflow:hidden}
-  .progress i{display:block;height:100%;width:0;background:var(--ink);border-radius:2px}
-
-  .end{position:relative;min-height:70svh;display:flex;flex-direction:column;align-items:center;
-    justify-content:center;text-align:center;gap:14px;padding:10vh 8vw}
-  .end .eyebrow{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
-  .end h2{font-weight:600;font-size:clamp(24px,4vw,40px);letter-spacing:-.02em}
-  .end p{color:var(--muted);max-width:46ch;line-height:1.6;font-size:15px}
-
-  @media (prefers-reduced-motion: reduce){
-    .hero img,.hero .cue .bar{animation:none}
-  }
+}
 </style>
 </head>
 <body>
-<div class="vignette"></div>
 
-<section class="hero">
-  <img src="Inicio.png" alt="Reloj Armani Exchange AX2145 ensamblado">
-  <div class="top">
-    <div class="eyebrow">Armani Exchange · AX2145</div>
-    <h1>Anatomía de un reloj<span>24 componentes, una sola pieza</span></h1>
+<!-- ================= BARRA ================= -->
+<header class="barra">
+  <div class="barra-in">
+    <a href="/" class="marca" aria-label="Medianoche, inicio">
+      <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M14.5 13.2A6.2 6.2 0 0 1 6.8 5.5a6.5 6.5 0 1 0 7.7 7.7Z" fill="currentColor"/></svg>
+      Medianoche
+    </a>
+    <label class="buscar">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><circle cx="7" cy="7" r="4.6"/><path d="m10.5 10.5 4 4"/></svg>
+      <input type="search" placeholder="Buscar por modelo o referencia">
+    </label>
+    <nav class="nav">
+      <a href="/anatomia/index.html" class="activo">Anatomía</a>
+      <a href="/catalogo">Catálogo</a>
+      <a href="/#informacion" class="oculta-movil">Nosotros</a>
+      <a href="/#informacion" class="oculta-movil">Contacto</a>
+      <a href="#" class="icono" aria-label="Bolsa de compras">
+        <svg width="17" height="17" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M3.4 5.5h11.2l-.9 9.3a1 1 0 0 1-1 .9H5.3a1 1 0 0 1-1-.9L3.4 5.5Z"/><path d="M6.4 7.4V5a2.6 2.6 0 0 1 5.2 0v2.4"/></svg>
+        <span class="cuenta">0</span>
+      </a>
+    </nav>
   </div>
-  <div class="cue"><span class="bar"></span>Desliza para desarmar</div>
-</section>
+</header>
 
-<section class="teardown" id="teardown">
-  <div class="stage">
-    <div class="canvas" id="canvas"></div>
-    <img class="hero3d" id="hero3d" src="Inicio.png" alt="">
-    <div class="labels" id="labels"></div>
-    <div class="caption" id="caption">
-      <div class="k" id="capK">El reloj, ensamblado</div>
-      <div class="t" id="capT">Cada detalle en su lugar</div>
+<!-- ================= PORTADILLA ================= -->
+<div class="hoja">
+  <div class="miga"><a href="/">Inicio</a> &nbsp;/&nbsp; Anatomía</div>
+  <div class="portadilla">
+    <h1>Anatomía<br><em>de un reloj</em></h1>
+    <p>Un automático de tres manecillas tiene entre 120 y 200 piezas, y ninguna de ellas necesita batería: la energía viene del movimiento de su muñeca. Aquí puede abrir uno por dentro, pieza por pieza, y ver en qué orden se desarma sobre la mesa de un relojero.</p>
+  </div>
+</div>
+
+<nav class="indice" aria-label="Secciones de la página">
+  <div class="indice-in">
+    <a href="#exterior">01 — Por fuera</a>
+    <a href="#movimiento">02 — El movimiento</a>
+    <a href="#desarme">03 — Cómo se desarma</a>
+    <a href="#glosario">04 — Cierre</a>
+  </div>
+</nav>
+
+<!-- ================= 01 EXTERIOR ================= -->
+<section class="seccion" id="exterior">
+  <div class="rotulo"><span class="num">01</span><h2>Por fuera</h2></div>
+  <p class="entrada">Toque cualquier número del diagrama para conocer la pieza. Es lo que usted ve y toca todos los días: la caja que protege, el cristal que deja mirar y la corona que lo pone en hora.</p>
+
+  <div class="taller">
+    <div class="plano" data-rotulo="Vista frontal · escala aproximada">
+      <svg viewBox="0 0 380 500" role="img" aria-label="Diagrama de las partes externas de un reloj de pulsera">
+
+        <!-- brazalete -->
+        <g class="pieza" data-id="brazalete" tabindex="0" role="button" aria-label="Pieza 9: brazalete o correa">
+          <rect class="relleno" x="140" y="12" width="100" height="70"/>
+          <rect class="relleno" x="140" y="418" width="100" height="70"/>
+          <path class="cuerpo" d="M143 78V26a12 12 0 0 1 12-12h70a12 12 0 0 1 12 12v52"/>
+          <path class="cuerpo" d="M143 422v52a12 12 0 0 0 12 12h70a12 12 0 0 0 12-12v-52"/>
+          <path class="fijo" d="M143 34h94M143 52h94M143 448h94M143 466h94"/>
+          <line class="guia" x1="150" y1="30" x2="60" y2="30"/>
+          <circle class="punto" cx="50" cy="30" r="9"/><text class="cifra" x="50" y="30">9</text>
+        </g>
+
+        <!-- asas -->
+        <g class="pieza" data-id="asas" tabindex="0" role="button" aria-label="Pieza 8: asas">
+          <path class="cuerpo" d="M143 78c0 14-6 22-16 30M237 78c0 14 6 22 16 30"/>
+          <path class="cuerpo" d="M143 422c0-14-6-22-16-30M237 422c0-14 6-22 16-30"/>
+          <line class="guia" x1="128" y1="106" x2="62" y2="122"/>
+          <circle class="punto" cx="52" cy="124" r="9"/><text class="cifra" x="52" y="124">8</text>
+        </g>
+
+        <!-- caja -->
+        <g class="pieza" data-id="caja" tabindex="0" role="button" aria-label="Pieza 7: caja">
+          <circle class="relleno" cx="190" cy="250" r="128"/>
+          <circle class="cuerpo" cx="190" cy="250" r="128"/>
+          <line class="guia" x1="80" y1="316" x2="46" y2="336"/>
+          <circle class="punto" cx="36" cy="342" r="9"/><text class="cifra" x="36" y="342">7</text>
+        </g>
+
+        <!-- corona -->
+        <g class="pieza" data-id="corona" tabindex="0" role="button" aria-label="Pieza 6: corona">
+          <rect class="relleno" x="316" y="234" width="24" height="32"/>
+          <path class="cuerpo" d="M316 234h20a4 4 0 0 1 4 4v24a4 4 0 0 1-4 4h-20z"/>
+          <path class="fijo" d="M322 234v32M328 234v32M334 234v32"/>
+          <line class="guia" x1="340" y1="250" x2="356" y2="212"/>
+          <circle class="punto" cx="359" cy="203" r="9"/><text class="cifra" x="359" y="203">6</text>
+        </g>
+
+        <!-- bisel -->
+        <g class="pieza" data-id="bisel" tabindex="0" role="button" aria-label="Pieza 1: bisel">
+          <circle class="relleno" cx="190" cy="250" r="120"/>
+          <circle class="cuerpo" cx="190" cy="250" r="120"/>
+          <circle class="cuerpo" cx="190" cy="250" r="108"/>
+          <line class="guia" x1="240" y1="147" x2="300" y2="98"/>
+          <circle class="punto" cx="309" cy="91" r="9"/><text class="cifra" x="309" y="91">1</text>
+        </g>
+
+        <!-- cristal -->
+        <g class="pieza" data-id="cristal" tabindex="0" role="button" aria-label="Pieza 2: cristal">
+          <circle class="relleno" cx="190" cy="250" r="104"/>
+          <circle class="cuerpo" cx="190" cy="250" r="104"/>
+          <path class="fijo" d="M126 186a92 92 0 0 1 46-30" />
+          <line class="guia" x1="140" y1="176" x2="84" y2="128"/>
+          <circle class="punto" cx="75" cy="121" r="9"/><text class="cifra" x="75" y="121">2</text>
+        </g>
+
+        <!-- esfera -->
+        <g class="pieza" data-id="esfera" tabindex="0" role="button" aria-label="Pieza 3: esfera">
+          <circle class="relleno" cx="190" cy="250" r="98"/>
+          <circle class="cuerpo" cx="190" cy="250" r="98"/>
+          <line class="guia" x1="120" y1="320" x2="70" y2="362"/>
+          <circle class="punto" cx="61" cy="369" r="9"/><text class="cifra" x="61" y="369">3</text>
+        </g>
+
+        <!-- índices -->
+        <g class="pieza" data-id="indices" tabindex="0" role="button" aria-label="Pieza 4: índices">
+          <g id="marcasEsfera"></g>
+          <line class="guia" x1="256" y1="322" x2="312" y2="366"/>
+          <circle class="punto" cx="321" cy="373" r="9"/><text class="cifra" x="321" y="373">4</text>
+        </g>
+
+        <!-- manecillas -->
+        <g class="pieza" data-id="manecillas" tabindex="0" role="button" aria-label="Pieza 5: manecillas">
+          <line class="cuerpo" x1="190" y1="258" x2="190" y2="192" stroke-linecap="round" style="stroke-width:3" transform="rotate(60 190 250)"/>
+          <line class="cuerpo" x1="190" y1="262" x2="190" y2="168" stroke-linecap="round" style="stroke-width:2" transform="rotate(-15 190 250)"/>
+          <line class="cuerpo" x1="190" y1="272" x2="190" y2="160" stroke-linecap="round" style="stroke-width:.9" transform="rotate(140 190 250)"/>
+          <circle cx="190" cy="250" r="4" fill="currentColor"/>
+          <line class="guia" x1="252" y1="188" x2="308" y2="150"/>
+          <circle class="punto" cx="317" cy="144" r="9"/><text class="cifra" x="317" y="144">5</text>
+        </g>
+      </svg>
     </div>
-    <div class="progress"><i id="bar"></i></div>
+
+    <div class="ficha" id="fichaExterior" aria-live="polite">
+      <div class="indicador">Pieza seleccionada</div>
+      <h3 id="fx-nombre">—</h3>
+      <div class="alias" id="fx-alias"></div>
+      <p id="fx-texto"></p>
+      <div class="dato" id="fx-dato"></div>
+      <div class="lista-piezas" id="fx-lista"></div>
+    </div>
   </div>
 </section>
 
-<section class="end">
-  <div class="eyebrow">Ingeniería en 24 piezas</div>
-  <h2>Del último eslabón al bisel</h2>
-  <p>Bisel, cristal, esfera, manecillas, rueda de fecha, movimiento, caja y tapa — cada componente separado en capas y animado en 2.5D a partir de una sola imagen.</p>
-  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:22px">
-    <a href="/?q=Armani" style="display:inline-flex;align-items:center;padding:12px 22px;border-radius:10px;background:#17130e;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600">Ver el Armani Exchange</a>
-    <a href="/" style="display:inline-flex;align-items:center;padding:12px 22px;border-radius:10px;border:1px solid rgba(0,0,0,.25);color:#18140d;text-decoration:none;font-size:14px">← Volver a la tienda</a>
+<!-- ================= 02 MOVIMIENTO ================= -->
+<section class="seccion" id="movimiento" style="border-top:1px solid var(--linea)">
+  <div class="rotulo"><span class="num">02</span><h2>El movimiento</h2></div>
+  <p class="entrada">El calibre: la máquina que va dentro de la caja. En un automático, el rotor recoge la energía de su brazo, el barrilete la guarda, el tren la transporta y el escape la suelta en porciones exactas. El volante es el que decide cuánto dura cada porción.</p>
+
+  <div class="taller">
+    <div class="plano" data-rotulo="Calibre automático · vista desde el fondo">
+      <svg viewBox="0 0 380 500" role="img" aria-label="Diagrama del movimiento automático de un reloj">
+        <circle class="fijo" cx="190" cy="250" r="160"/>
+        <circle class="fijo" cx="190" cy="250" r="152"/>
+
+        <!-- platina y puentes -->
+        <g class="pieza" data-id="puentes" tabindex="0" role="button" aria-label="Pieza 8: platina y puentes">
+          <circle class="relleno" cx="190" cy="250" r="146"/>
+          <circle class="cuerpo" cx="190" cy="250" r="146"/>
+          <path class="fijo" d="M78 168c40 22 96 26 148 8M92 356c48 16 104 6 148-22"/>
+          <line class="guia" x1="70" y1="180" x2="34" y2="150"/>
+          <circle class="punto" cx="25" cy="143" r="9"/><text class="cifra" x="25" y="143">8</text>
+        </g>
+
+        <!-- rotor -->
+        <g class="pieza" data-id="rotor" tabindex="0" role="button" aria-label="Pieza 1: rotor o masa oscilante">
+          <g id="rotor">
+            <path class="cuerpo" d="M190 250a132 132 0 0 0 132-132A132 132 0 0 0 190 250Z" transform="rotate(-35 190 250)"/>
+            <path class="fijo" d="M190 250a112 112 0 0 0 112-112" transform="rotate(-35 190 250)"/>
+          </g>
+          <line class="guia" x1="286" y1="152" x2="330" y2="112"/>
+          <circle class="punto" cx="339" cy="104" r="9"/><text class="cifra" x="339" y="104">1</text>
+        </g>
+
+        <!-- barrilete -->
+        <g class="pieza" data-id="barrilete" tabindex="0" role="button" aria-label="Pieza 2: barrilete">
+          <circle class="relleno" cx="118" cy="196" r="46"/>
+          <circle class="cuerpo" cx="118" cy="196" r="46"/>
+          <path class="fijo" d="M118 196c0-8 10-8 10-18s-14-12-14-24 18-14 18-26"/>
+          <circle class="fijo-lleno" cx="118" cy="196" r="5"/>
+          <line class="guia" x1="80" y1="170" x2="40" y2="196"/>
+          <circle class="punto" cx="30" cy="202" r="9"/><text class="cifra" x="30" y="202">2</text>
+        </g>
+
+        <!-- tren de engranajes -->
+        <g class="pieza" data-id="tren" tabindex="0" role="button" aria-label="Pieza 3: tren de engranajes">
+          <circle class="relleno" cx="190" cy="222" r="30"/>
+          <circle class="cuerpo" cx="190" cy="222" r="30"/>
+          <circle class="cuerpo" cx="238" cy="252" r="24"/>
+          <circle class="cuerpo" cx="222" cy="300" r="18"/>
+          <circle class="fijo-lleno" cx="190" cy="222" r="3.4"/>
+          <circle class="fijo-lleno" cx="238" cy="252" r="3"/>
+          <line class="guia" x1="264" y1="248" x2="316" y2="238"/>
+          <circle class="punto" cx="326" cy="236" r="9"/><text class="cifra" x="326" y="236">3</text>
+        </g>
+
+        <!-- escape -->
+        <g class="pieza" data-id="escape" tabindex="0" role="button" aria-label="Piezas 4 y 5: rueda de escape y áncora">
+          <circle class="relleno" cx="212" cy="344" r="20"/>
+          <circle class="cuerpo" cx="212" cy="344" r="20"/>
+          <path class="cuerpo" d="M212 364c-14 4-24-6-22-18"/>
+          <path class="cuerpo" d="M198 352 176 330l-10 8 8 10"/>
+          <line class="guia" x1="228" y1="360" x2="292" y2="384"/>
+          <circle class="punto" cx="302" cy="388" r="9"/><text class="cifra" x="302" y="388">4</text>
+        </g>
+
+        <!-- volante -->
+        <g class="pieza" data-id="volante" tabindex="0" role="button" aria-label="Pieza 5: volante y espiral">
+          <g id="volante">
+            <circle class="cuerpo" cx="190" cy="300" r="0" />
+          </g>
+          <g id="volanteFijo">
+            <circle class="relleno" cx="128" cy="300" r="42"/>
+            <circle class="cuerpo" cx="128" cy="300" r="42"/>
+            <circle class="cuerpo" cx="128" cy="300" r="36" style="stroke-width:.7"/>
+            <path class="fijo" d="M128 300a8 8 0 0 1 8-8 16 16 0 0 1 16 16 24 24 0 0 1-24 24 32 32 0 0 1-32-32"/>
+            <circle class="fijo-lleno" cx="128" cy="300" r="3.6"/>
+          </g>
+          <line class="guia" x1="90" y1="324" x2="42" y2="352"/>
+          <circle class="punto" cx="32" cy="358" r="9"/><text class="cifra" x="32" y="358">5</text>
+        </g>
+
+        <!-- rubíes -->
+        <g class="pieza" data-id="rubies" tabindex="0" role="button" aria-label="Pieza 6: rubíes">
+          <circle class="cuerpo" cx="160" cy="240" r="6"/>
+          <circle class="cuerpo" cx="246" cy="206" r="6"/>
+          <circle class="cuerpo" cx="168" cy="356" r="6"/>
+          <line class="guia" x1="252" y1="200" x2="308" y2="176"/>
+          <circle class="punto" cx="318" cy="172" r="9"/><text class="cifra" x="318" y="172">6</text>
+        </g>
+
+        <!-- tija y corona -->
+        <g class="pieza" data-id="tija" tabindex="0" role="button" aria-label="Pieza 7: tija de cuerda">
+          <path class="cuerpo" d="M296 268h44"/>
+          <circle class="cuerpo" cx="290" cy="268" r="14"/>
+          <line class="guia" x1="340" y1="268" x2="356" y2="300"/>
+          <circle class="punto" cx="359" cy="309" r="9"/><text class="cifra" x="359" y="309">7</text>
+        </g>
+
+        <!-- tapa -->
+        <g class="pieza" data-id="tapa" tabindex="0" role="button" aria-label="Pieza 9: tapa trasera y empaques">
+          <circle class="cuerpo" cx="190" cy="250" r="166" style="stroke-dasharray:6 5"/>
+          <line class="guia" x1="190" y1="416" x2="190" y2="452"/>
+          <circle class="punto" cx="190" cy="462" r="9"/><text class="cifra" x="190" y="462">9</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="ficha" id="fichaMovimiento" aria-live="polite">
+      <div class="indicador">Pieza seleccionada</div>
+      <h3 id="fm-nombre">—</h3>
+      <div class="alias" id="fm-alias"></div>
+      <p id="fm-texto"></p>
+      <div class="dato" id="fm-dato"></div>
+      <div class="lista-piezas" id="fm-lista"></div>
+    </div>
   </div>
 </section>
 
-<script id="LD" type="application/json">{
- "canvas": {
-  "w": 864,
-  "h": 1821
- },
- "layers": [
-  {
-   "name": "bezel_screw_top",
-   "kind": "screw",
-   "z": 0,
-   "x": 448,
-   "y": 46,
-   "w": 14,
-   "h": 28,
-   "cx": 455,
-   "cy": 60
-  },
-  {
-   "name": "bezel",
-   "kind": "ring",
-   "z": 1,
-   "x": 302,
-   "y": 80,
-   "w": 297,
-   "h": 172,
-   "cx": 450,
-   "cy": 166
-  },
-  {
-   "name": "bezel_screw",
-   "kind": "screw",
-   "z": 0,
-   "x": 611,
-   "y": 187,
-   "w": 14,
-   "h": 31,
-   "cx": 618,
-   "cy": 202
-  },
-  {
-   "name": "crystal",
-   "kind": "glass",
-   "z": 2,
-   "x": 335,
-   "y": 250,
-   "w": 243,
-   "h": 132,
-   "cx": 456,
-   "cy": 316
-  },
-  {
-   "name": "dial",
-   "kind": "disc",
-   "z": 3,
-   "x": 293,
-   "y": 378,
-   "w": 301,
-   "h": 203,
-   "cx": 443,
-   "cy": 479
-  },
-  {
-   "name": "hands",
-   "kind": "hand",
-   "z": 4,
-   "x": 306,
-   "y": 592,
-   "w": 124,
-   "h": 130,
-   "cx": 368,
-   "cy": 657
-  },
-  {
-   "name": "seconds_hand",
-   "kind": "hand",
-   "z": 4,
-   "x": 456,
-   "y": 570,
-   "w": 133,
-   "h": 76,
-   "cx": 522,
-   "cy": 608
-  },
-  {
-   "name": "spacer_ring",
-   "kind": "ring",
-   "z": 5,
-   "x": 342,
-   "y": 696,
-   "w": 200,
-   "h": 108,
-   "cx": 442,
-   "cy": 750
-  },
-  {
-   "name": "date_wheel",
-   "kind": "ring",
-   "z": 6,
-   "x": 342,
-   "y": 802,
-   "w": 200,
-   "h": 122,
-   "cx": 442,
-   "cy": 863
-  },
-  {
-   "name": "movement_front",
-   "kind": "disc",
-   "z": 7,
-   "x": 303,
-   "y": 928,
-   "w": 291,
-   "h": 162,
-   "cx": 448,
-   "cy": 1009
-  },
-  {
-   "name": "crown",
-   "kind": "part",
-   "z": 7,
-   "x": 595,
-   "y": 985,
-   "w": 89,
-   "h": 54,
-   "cx": 639,
-   "cy": 1012
-  },
-  {
-   "name": "screw_r1",
-   "kind": "screw",
-   "z": 0,
-   "x": 605,
-   "y": 1061,
-   "w": 18,
-   "h": 38,
-   "cx": 614,
-   "cy": 1080
-  },
-  {
-   "name": "screw_l1",
-   "kind": "screw",
-   "z": 0,
-   "x": 541,
-   "y": 1084,
-   "w": 19,
-   "h": 40,
-   "cx": 550,
-   "cy": 1104
-  },
-  {
-   "name": "movement_plate",
-   "kind": "disc",
-   "z": 8,
-   "x": 366,
-   "y": 1084,
-   "w": 194,
-   "h": 132,
-   "cx": 463,
-   "cy": 1150
-  },
-  {
-   "name": "screw_r2",
-   "kind": "screw",
-   "z": 0,
-   "x": 599,
-   "y": 1196,
-   "w": 20,
-   "h": 31,
-   "cx": 609,
-   "cy": 1211
-  },
-  {
-   "name": "case",
-   "kind": "body",
-   "z": 9,
-   "x": 282,
-   "y": 1188,
-   "w": 304,
-   "h": 171,
-   "cx": 434,
-   "cy": 1273
-  },
-  {
-   "name": "clip",
-   "kind": "part",
-   "z": 10,
-   "x": 397,
-   "y": 1350,
-   "w": 86,
-   "h": 67,
-   "cx": 440,
-   "cy": 1383
-  },
-  {
-   "name": "screw_b1",
-   "kind": "screw",
-   "z": 0,
-   "x": 331,
-   "y": 1383,
-   "w": 20,
-   "h": 36,
-   "cx": 341,
-   "cy": 1401
-  },
-  {
-   "name": "screw_b2",
-   "kind": "screw",
-   "z": 0,
-   "x": 372,
-   "y": 1356,
-   "w": 19,
-   "h": 34,
-   "cx": 381,
-   "cy": 1373
-  },
-  {
-   "name": "screw_b3",
-   "kind": "screw",
-   "z": 0,
-   "x": 494,
-   "y": 1389,
-   "w": 31,
-   "h": 23,
-   "cx": 509,
-   "cy": 1400
-  },
-  {
-   "name": "screw_b4",
-   "kind": "screw",
-   "z": 0,
-   "x": 545,
-   "y": 1355,
-   "w": 18,
-   "h": 35,
-   "cx": 554,
-   "cy": 1372
-  },
-  {
-   "name": "caseback",
-   "kind": "disc",
-   "z": 11,
-   "x": 297,
-   "y": 1436,
-   "w": 265,
-   "h": 180,
-   "cx": 429,
-   "cy": 1526
-  },
-  {
-   "name": "bracelet",
-   "kind": "band",
-   "z": 12,
-   "x": 314,
-   "y": 1622,
-   "w": 227,
-   "h": 108,
-   "cx": 427,
-   "cy": 1676
-  }
- ]
-}</script>
+<!-- ================= 03 DESARME ================= -->
+<div class="desarme" id="desarme">
+  <section class="seccion">
+    <div class="rotulo"><span class="num">03</span><h2>Cómo se desarma un automático</h2></div>
+    <p class="entrada">El orden importa: cada paso libera el siguiente. Este es el recorrido que hace un relojero sobre la mesa, del brazalete hasta el barrilete.</p>
+
+    <div class="aviso">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/><path d="M12 7v6"/><circle cx="12" cy="16.5" r=".8" fill="currentColor" stroke="none"/>
+      </svg>
+      <p><strong>Antes de empezar.</strong> Esto es material informativo. Abrir un reloj anula la garantía de fábrica en casi todas las marcas, y un solo grano de polvo dentro del calibre basta para alterar la marcha. Si su reloj está en garantía, o si es una pieza de valor, llévelo con un relojero. Si aun así quiere practicar, hágalo primero con un movimiento de estudio barato, nunca con el reloj que usa a diario.</p>
+    </div>
+
+    <h3 style="font-family:var(--serif);font-weight:400;font-size:26px;margin-bottom:18px">Lo mínimo sobre la mesa</h3>
+    <div class="herramientas">
+      <div class="herramienta"><div class="h">Barra de resorte</div><div class="d">Para soltar el brazalete de las asas sin rayar la caja.</div></div>
+      <div class="herramienta"><div class="h">Abridor de fondo</div><div class="d">De cuchilla para tapas a presión, de garras para tapas roscadas.</div></div>
+      <div class="herramienta"><div class="h">Destornilladores de relojero</div><div class="d">Juego de 0.6 a 1.6 mm, con la punta bien afilada y plana.</div></div>
+      <div class="herramienta"><div class="h">Pinzas antimagnéticas</div><div class="d">Punta fina, de acero no magnético. Las magnéticas arruinan el volante.</div></div>
+      <div class="herramienta"><div class="h">Extractor de manecillas</div><div class="d">Con protector de esfera. Nunca haga palanca directa sobre la esfera.</div></div>
+      <div class="herramienta"><div class="h">Perilla y guantes</div><div class="d">Aire para el polvo, dedos limpios: el sudor oxida las piezas de acero.</div></div>
+      <div class="herramienta"><div class="h">Portamovimiento</div><div class="d">Sujeta el calibre sin que usted lo apriete con los dedos.</div></div>
+      <div class="herramienta"><div class="h">Bandeja compartimentada</div><div class="d">Cada tornillo en su casilla, en el orden en que salió.</div></div>
+    </div>
+
+    <div class="paso">
+      <div class="p-num">01</div>
+      <div>
+        <h3>Soltar el brazalete</h3>
+        <p>Con la herramienta de barra de resorte, empuje el pasador hacia adentro por la ranura de la asa y libere un extremo, luego el otro. Trabaje sobre un paño para que el pasador no salga disparado.</p>
+        <div class="cuidado"><span>Cuidado</span>Apoye la punta en la ranura, no en el flanco de la caja: es donde se hace la raya que después no se quita.</div>
+      </div>
+      <div class="lado"><b>Se retira:</b> brazalete, 2 barras<br><b>Tiempo:</b> 2 min</div>
+    </div>
+
+    <div class="paso">
+      <div class="p-num">02</div>
+      <div>
+        <h3>Abrir el fondo</h3>
+        <p>Identifique primero el tipo de tapa. Si tiene muescas en el borde es roscada y se abre con llave de garras girando en sentido contrario a las manecillas. Si el borde es liso con una pequeña pestaña, es a presión y se levanta con cuchilla desde esa pestaña.</p>
+        <div class="cuidado"><span>Cuidado</span>La cuchilla debe entrar plana y hacer palanca contra la caja, nunca contra el cristal. Y a partir de aquí el reloj ya no es hermético.</div>
+      </div>
+      <div class="lado"><b>Aparece:</b> rotor, puentes<br><b>Tiempo:</b> 5 min</div>
+    </div>
+
+    <div class="paso">
+      <div class="p-num">03</div>
+      <div>
+        <h3>Descargar el muelle real</h3>
+        <p>Antes de tocar nada, hay que liberar la tensión acumulada en el barrilete. Se sujeta la corona, se acciona el trinquete de retención con una punta fina y se deja que la cuerda se suelte poco a poco, controlando el giro con los dedos.</p>
+        <div class="cuidado"><span>Cuidado</span>Este es el paso que más piezas rompe cuando se salta. Un barrilete cargado que se suelta de golpe puede doblar dientes del tren o disparar el áncora.</div>
+      </div>
+      <div class="lado"><b>Estado:</b> calibre sin energía<br><b>Tiempo:</b> 3 min</div>
+    </div>
+
+    <div class="paso">
+      <div class="p-num">04</div>
+      <div>
+        <h3>Retirar el rotor</h3>
+        <p>La masa oscilante se sujeta con un tornillo central o con un rodamiento de bolas atornillado al puente automático. Se afloja, se levanta recto y se guarda aparte: es la pieza más pesada y la que más daño hace si cae sobre el volante.</p>
+      </div>
+      <div class="lado"><b>Se retira:</b> rotor, 1–3 tornillos<br><b>Tiempo:</b> 3 min</div>
+    </div>
+
+    <div class="paso">
+      <div class="p-num">05</div>
+      <div>
+        <h3>Desmontar el módulo automático</h3>
+        <p>Debajo del rotor está el puente con las ruedas reductoras y el inversor, el juego que convierte el giro en ambos sentidos en cuerda en un solo sentido. Salen dos o tres tornillos y el puente completo se levanta con las ruedas puestas.</p>
+        <div class="cuidado"><span>Cuidado</span>Fotografíe cada capa antes de levantarla. Las ruedas se ven casi iguales entre sí y el orden de armado no perdona.</div>
+      </div>
+      <div class="lado"><b>Se retira:</b> puente automático<br><b>Tiempo:</b> 6 min</div>
+    </div>
+
+    <div class="paso">
+      <div class="p-num">06</div>
+      <div>
+        <h3>Sacar la tija y la corona</h3>
+        <p>En un costado de la platina hay un tornillo o un pulsador de traba. Se presiona o se afloja media vuelta y la tija sale tirando de la corona hacia afuera. Sin esto, el movimiento no sale de la caja.</p>
+        <div class="cuidado"><span>Cuidado</span>Si es tornillo, media vuelta basta. Aflojarlo de más deja caer la pieza de fijación dentro del mecanismo de puesta en hora.</div>
+      </div>
+      <div class="lado"><b>Se retira:</b> tija y corona<br><b>Tiempo:</b> 4 min</div>
+    </div>
+
+    <div class="paso">
+      <div class="p-num">07</div>
+      <div>
+        <h3>Extraer el movimiento de la caja</h3>
+        <p>Se quita el aro de sujeción si lo hay y el calibre sale por atrás, empujando con suavidad desde el lado de la esfera. A partir de aquí el trabajo se hace sobre el portamovimiento, no sobre la caja.</p>
+      </div>
+      <div class="lado"><b>Queda:</b> caja y cristal vacíos<br><b>Tiempo:</b> 3 min</div>
+    </div>
+
+    <div class="paso">
+      <div class="p-num">08</div>
+      <div>
+        <h3>Quitar las manecillas</h3>
+        <p>Se cubre la esfera con una lámina protectora y se levantan las tres manecillas juntas con el extractor, tirando recto hacia arriba. Salen en el orden inverso al que entraron: segundero, minutero, horario.</p>
+        <div class="cuidado"><span>Cuidado</span>Un tirón inclinado dobla el tubo de la manecilla y ya no vuelve a asentar bien. Y una marca en la esfera es prácticamente irreparable.</div>
+      </div>
+      <div class="lado"><b>Se retira:</b> 3 manecillas<br><b>Tiempo:</b> 5 min</div>
+    </div>
+
+    <div class="paso">
+      <div class="p-num">09</div>
+      <div>
+        <h3>Liberar la esfera</h3>
+        <p>La esfera se sostiene con dos tornillos laterales en la platina o con pies encajados a presión. Se aflojan y se levanta tomándola por el canto, nunca por la cara.</p>
+        <div class="cuidado"><span>Cuidado</span>Debajo suele estar el mecanismo de calendario, que salta en cuanto se levanta la esfera. Hágalo con el calibre plano y sin inclinarlo.</div>
+      </div>
+      <div class="lado"><b>Aparece:</b> calendario, rueda de horas<br><b>Tiempo:</b> 4 min</div>
+    </div>
+
+    <div class="paso">
+      <div class="p-num">10</div>
+      <div>
+        <h3>Retirar el volante</h3>
+        <p>El puente del volante sale con un solo tornillo, y con él sale toda la asamblea: volante, espiral y raqueta. Es la pieza más delicada del reloj y la primera que se guarda aparte, en su propia casilla.</p>
+        <div class="cuidado"><span>Cuidado</span>No la toque nunca con los dedos ni con pinzas magnéticas. La espiral es más fina que un cabello y se deforma con nada.</div>
+      </div>
+      <div class="lado"><b>Se retira:</b> volante y espiral<br><b>Tiempo:</b> 4 min</div>
+    </div>
+
+    <div class="paso">
+      <div class="p-num">11</div>
+      <div>
+        <h3>Áncora y tren de engranajes</h3>
+        <p>Después del volante sale el áncora con su puente, y luego el puente del tren, que descubre la rueda de escape, la de segundos, la intermedia y la central. Se levantan una por una y se colocan en la bandeja en el mismo orden.</p>
+      </div>
+      <div class="lado"><b>Se retira:</b> áncora, 4 ruedas<br><b>Tiempo:</b> 8 min</div>
+    </div>
+
+    <div class="paso">
+      <div class="p-num">12</div>
+      <div>
+        <h3>Barrilete y platina desnuda</h3>
+        <p>Al final queda el barrilete, que se saca completo y solo se abre si se va a cambiar el muelle. Sobre la mesa tiene ahora la platina limpia y, alrededor, entre 90 y 150 piezas. El armado es exactamente el camino inverso, con aceite en cada rubí.</p>
+        <div class="cuidado"><span>Cuidado</span>Un reloj desarmado sin lubricar al armar dura semanas, no años. El aceitado es un oficio en sí mismo.</div>
+      </div>
+      <div class="lado"><b>Queda:</b> platina desnuda<br><b>Tiempo:</b> 6 min</div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= CIERRE ================= -->
+<section class="cierre" id="glosario">
+  <span class="eyebrow">Ya sabe qué lleva dentro</span>
+  <h2>Ahora elija el suyo</h2>
+  <p>Cada automático del catálogo llega revisado en marcha, reserva y hermeticidad, con su documentación.</p>
+  <a class="btn" href="/catalogo">Ver automáticos <span class="flecha" aria-hidden="true">→</span></a>
+</section>
+
+<footer class="pie">
+  <div class="pie-in">
+    <span>© <span id="anio">2026</span> Medianoche · Guatemala</span>
+    <nav class="pie-links"><a href="#">Envíos</a><a href="#">Garantía</a><a href="#">Devoluciones</a><a href="#">Términos</a></nav>
+  </div>
+</footer>
+
 <script>
 (function(){
-  const DATA = JSON.parse(document.getElementById('LD').textContent);
-  const CW = DATA.canvas.w, CH = DATA.canvas.h;
-  const CX = CW/2, CY = CH/2;
+  "use strict";
 
-  // assembly focus (canvas coords) + rest-packing (0 = single pile, 1 = fully exploded)
-  const ACX = 446, ACY = 860, COMPRESS = 0.38;
-  const clamp=(v,a,b)=>v<a?a:v>b?b:v;
-  const easeIO=t=>t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
-  const lerp=(a,b,t)=>a+(b-a)*t;
-
-  // per-part config: o=explosion order(0..1), kind ext(always visible)/int(fades in),
-  // ax/ay override assembled center, label + role text
-  const CFG = {
-    bezel_screw_top:{o:0.00,kind:'int',ax:446,ay:800},
-    bezel:          {o:0.05,kind:'ext',label:'Bisel',role:'Bezel'},
-    bezel_screw:    {o:0.03,kind:'int',ax:446,ay:800},
-    crystal:        {o:0.12,kind:'ext',baseOp:0.5,label:'Cristal',role:'Crystal'},
-    dial:           {o:0.20,kind:'ext',label:'Esfera',role:'Dial'},
-    hands:          {o:0.28,kind:'ext',label:'Manecillas',role:'Hands'},
-    seconds_hand:   {o:0.30,kind:'ext'},
-    spacer_ring:    {o:0.37,kind:'int',label:'Aro espaciador',role:'Spacer'},
-    date_wheel:     {o:0.43,kind:'int',label:'Rueda de fecha',role:'Date wheel'},
-    movement_front: {o:0.49,kind:'int',label:'Movimiento',role:'Movement'},
-    crown:          {o:0.49,kind:'ext',ax:642,ay:819},
-    screw_r1:       {o:0.53,kind:'int'},
-    screw_l1:       {o:0.53,kind:'int'},
-    movement_plate: {o:0.57,kind:'int',label:'Placa',role:'Base plate'},
-    screw_r2:       {o:0.61,kind:'int'},
-    case:           {o:0.65,kind:'ext',label:'Caja',role:'Case'},
-    clip:           {o:0.71,kind:'int'},
-    screw_b1:       {o:0.73,kind:'int'},
-    screw_b2:       {o:0.73,kind:'int'},
-    screw_b3:       {o:0.74,kind:'int'},
-    screw_b4:       {o:0.74,kind:'int'},
-    caseback:       {o:0.81,kind:'ext',label:'Tapa trasera',role:'Caseback'},
-    bracelet:       {o:0.90,kind:'ext',ax:446,ay:968,label:'Eslabón',role:'Bracelet'},
+  var EXTERIOR = {
+    bisel:{n:1,nombre:"Bisel",alias:"Aro exterior",texto:"El aro que rodea el cristal y lo aprieta contra la caja. Puede ser fijo, o giratorio en los relojes de buceo, donde sirve para medir tiempo transcurrido. En un bisel de buceo bien hecho el giro es unidireccional: solo hacia la izquierda, para que un golpe accidental nunca le haga creer que le queda más aire del que tiene.",dato:"<strong>Cómo se revisa:</strong> el giro debe sentirse en clics firmes, sin juego lateral ni puntos flojos."},
+    cristal:{n:2,nombre:"Cristal",alias:"Zafiro · mineral · acrílico",texto:"La ventana. El zafiro sintético es el más duro y casi no se raya, pero se astilla con un golpe seco. El mineral aguanta mejor el impacto y se raya más. El acrílico se raya con mirarlo, pero se pule en casa con pasta y es el único que no se rompe en pedazos.",dato:"<strong>Dato:</strong> el zafiro marca 9 en la escala de Mohs; solo el diamante, con 10, lo raya."},
+    esfera:{n:3,nombre:"Esfera",alias:"Cara · dial",texto:"La cara del reloj, y donde se juega casi toda su personalidad: el color, el acabado, la textura. Es una lámina de latón muy fina, lacada o galvanizada, sostenida por dos pies que se encajan en la platina.",dato:"<strong>Cuidado:</strong> es la pieza más frágil en el desarme. Una huella o un rayón sobre el lacado no tiene arreglo."},
+    indices:{n:4,nombre:"Índices",alias:"Marcadores de hora",texto:"Las marcas que dividen las doce horas. Pueden ser aplicados, pequeñas piezas metálicas pegadas una por una a mano, o impresos. Los aplicados atrapan la luz desde distintos ángulos, y esa es la diferencia que se nota entre un reloj barato y uno bien hecho.",dato:"<strong>Detalle:</strong> si brillan en la oscuridad llevan Super-LumiNova, un pigmento que se carga con la luz y no es radiactivo."},
+    manecillas:{n:5,nombre:"Manecillas",alias:"Agujas",texto:"Horario, minutero y segundero, montados en tres ejes concéntricos que salen del mismo centro. Van encajadas a presión sobre sus tubos, sin tornillos: la fricción es lo único que las sostiene.",dato:"<strong>Cómo se detecta un automático:</strong> el segundero barre continuo, no salta una vez por segundo como el cuarzo."},
+    corona:{n:6,nombre:"Corona",alias:"Perilla de cuerda",texto:"La pieza con la que se da cuerda, se cambia la fecha y se pone la hora, según la posición en que se jale. En los relojes con corona roscada hay que desenroscarla antes de usarla, y volver a enroscarla después: es lo que mantiene la hermeticidad.",dato:"<strong>Regla:</strong> nunca ajuste la fecha entre las 9 de la noche y las 3 de la mañana del reloj. A esa hora el calendario está engranado y se rompe."},
+    caja:{n:7,nombre:"Caja",alias:"Carrura",texto:"La estructura que aloja y protege todo. En acero 316L en la mayoría de relojes serios, que es el mismo grado quirúrgico que se usa en implantes y no provoca alergias. Sus acabados alternan superficies pulidas y cepilladas.",dato:"<strong>Sobre la hermeticidad:</strong> 30 m soporta salpicaduras; 100 m permite nadar; para bucear se necesitan 200 m o más."},
+    asas:{n:8,nombre:"Asas",alias:"Cuernos",texto:"Los cuatro brazos que sujetan la correa. La distancia entre las dos de un mismo lado define el ancho de correa que le sirve: 18, 20, 22 milímetros. Su curvatura decide si el reloj se asienta bien en una muñeca delgada.",dato:"<strong>Al comprar correa:</strong> mida esa distancia en milímetros, no el diámetro de la caja."},
+    brazalete:{n:9,nombre:"Brazalete o correa",alias:"Pulsera",texto:"Lo que lo mantiene en la muñeca, y también la mitad de la personalidad del reloj: el mismo modelo cambia por completo con acero, cuero o malla milanesa. Se sujeta a las asas con barras de resorte que se comprimen para entrar.",dato:"<strong>Consejo:</strong> ajuste el brazalete de modo que quepa un dedo entre él y la muñeca. Muy apretado, el reloj deja de dar cuerda bien."}
   };
 
-  // explicit front->back stacking; crystal sits BEHIND the dial so the face stays crisp
-  const STACK = ['bezel_screw_top','bezel_screw','screw_r1','screw_l1','screw_r2',
-    'screw_b1','screw_b2','screw_b3','screw_b4',
-    'bezel','hands','seconds_hand','dial','crystal','spacer_ring','date_wheel',
-    'movement_front','crown','movement_plate','case','clip','caseback','bracelet'];
-  const ZI = {}; STACK.forEach((n,i)=>ZI[n]=(STACK.length-i)*5+10);
+  var MOVIMIENTO = {
+    rotor:{n:1,nombre:"Rotor",alias:"Masa oscilante",texto:"El semicírculo de metal pesado que gira libremente con cada movimiento del brazo. Es lo que hace que un reloj sea automático: transmite ese giro, en ambos sentidos, al sistema de cuerda. Si deja de usar el reloj, se detiene en uno o dos días.",dato:"<strong>Se ve en acción</strong> en los relojes de fondo transparente. Es la pieza que más se disfruta mirar."},
+    barrilete:{n:2,nombre:"Barrilete",alias:"Muelle real",texto:"El tambor donde vive el muelle real, una cinta de acero enrollada que guarda toda la energía del reloj. Se tensa con el rotor o con la corona, y se libera lentamente durante horas. La reserva de marcha es exactamente cuánto tiempo alcanza esa cinta.",dato:"<strong>Reserva de marcha:</strong> lo normal son 38 a 42 horas. Los calibres modernos llegan a 70 u 80."},
+    tren:{n:3,nombre:"Tren de engranajes",alias:"Rodaje",texto:"La cadena de ruedas que lleva la energía del barrilete hasta el escape, reduciendo la velocidad en cada paso. De ahí salen también los ejes que mueven las manecillas: la rueda central da una vuelta por hora, la de segundos una por minuto.",dato:"<strong>Precisión mecánica:</strong> los dientes se cortan con tolerancias de micras. Un diente doblado desajusta todo el reloj."},
+    escape:{n:4,nombre:"Escape",alias:"Rueda de escape y áncora",texto:"El corazón del asunto. La rueda de escape empuja, el áncora la traba y la suelta, diente por diente, en porciones idénticas. Ese soltar y trabar es el tic-tac que usted escucha: energía continua convertida en pulsos contables.",dato:"<strong>El sonido:</strong> a 28,800 alternancias por hora son ocho tics por segundo, el ritmo más común hoy."},
+    volante:{n:5,nombre:"Volante y espiral",alias:"Órgano regulador",texto:"La rueda que oscila de un lado a otro sin parar, frenada y devuelta por una espiral finísima. Su periodo de oscilación es lo que define si el reloj adelanta o atrasa; regularlo es todo el oficio de la relojería.",dato:"<strong>La espiral</strong> mide unas cinco centésimas de milímetro de grosor. Tocarla con los dedos la deforma sin remedio."},
+    rubies:{n:6,nombre:"Rubíes",alias:"Piedras · jewels",texto:"Los puntos rojos que se ven en el calibre son rubíes sintéticos perforados, colocados donde apoyan los ejes. No son adorno ni lujo: el corindón es durísimo y casi no se desgasta, así que el eje gira sobre él durante décadas sin abrir juego.",dato:"<strong>Cuenta típica:</strong> 17 rubíes en un manual, 21 a 25 en un automático. Más de 30 rara vez añade algo real."},
+    tija:{n:7,nombre:"Tija de cuerda",alias:"Eje de la corona",texto:"El eje que conecta la corona con el interior. Según cuánto se jale, engrana la cuerda, el ajuste de fecha o la puesta en hora, gracias a un juego de palancas llamado mecanismo de tirete.",dato:"<strong>En el desarme:</strong> hasta que la tija no sale, el movimiento no puede salir de la caja."},
+    puentes:{n:8,nombre:"Platina y puentes",alias:"Esqueleto del calibre",texto:"La platina es la placa base sobre la que se monta todo; los puentes son las tapas atornilladas que sujetan cada eje por el otro extremo. Juntos forman el chasis, y su acabado (Côtes de Genève, perlado, chaflanes pulidos) es donde se mide el nivel del calibre.",dato:"<strong>Terminación:</strong> en la alta relojería los chaflanes se pulen a mano, uno por uno, y eso se ve a simple vista."},
+    tapa:{n:9,nombre:"Tapa trasera y empaques",alias:"Fondo",texto:"El cierre posterior, roscado o a presión, y los anillos de caucho que sellan la caja en la tapa, la corona y el cristal. Son los empaques, no el metal, los que hacen que un reloj sea resistente al agua.",dato:"<strong>Mantenimiento:</strong> los empaques se resecan. Conviene cambiarlos cada tres a cinco años si el reloj se moja."}
+  };
 
-  const canvas = document.getElementById('canvas');
-  const labelsEl = document.getElementById('labels');
-  const items = [];
+  function conectar(datos, prefijo, contenedorSVG, inicial){
+    var raiz = document.querySelector(contenedorSVG);
+    var nombre = document.getElementById(prefijo + '-nombre');
+    var alias  = document.getElementById(prefijo + '-alias');
+    var texto  = document.getElementById(prefijo + '-texto');
+    var dato   = document.getElementById(prefijo + '-dato');
+    var lista  = document.getElementById(prefijo + '-lista');
 
-  DATA.layers.forEach(L=>{
-    const c = CFG[L.name] || {o:0.5,kind:'int'};
-    const img = document.createElement('img');
-    img.className='layer'; img.src='layers/'+L.name+'.png'; img.alt=L.name; img.draggable=false;
-    img.style.left=L.x+'px'; img.style.top=L.y+'px';
-    img.style.width=L.w+'px'; img.style.height=L.h+'px';
-    img.style.zIndex = ZI[L.name]!==undefined ? ZI[L.name] : (100 - L.z);
-    canvas.appendChild(img);
-
-    // assembled top-left = compressed toward the focus (keeps stacking order, avoids one pile)
-    const acx = lerp(ACX, L.cx, COMPRESS);
-    const acy = lerp(ACY, L.cy, COMPRESS);
-    const aLeft = acx - L.w/2, aTop = acy - L.h/2;
-
-    const rot = (L.name.indexOf('screw')===0)? -14 : 0; // screws twist out
-
-    let labelEl=null;
-    if(c.label){
-      labelEl=document.createElement('div'); labelEl.className='label';
-      labelEl.innerHTML='<span class="dot"></span><span class="ln"></span>'+
-        '<span class="tx">'+c.label+(c.role?'<small>'+c.role+'</small>':'')+'</span>';
-      labelsEl.appendChild(labelEl);
+    function mostrar(id){
+      var d = datos[id];
+      if (!d) return;
+      nombre.textContent = d.nombre;
+      alias.textContent = d.alias;
+      texto.textContent = d.texto;
+      dato.innerHTML = d.dato;
+      raiz.querySelectorAll('.pieza').forEach(function(p){ p.classList.toggle('activa', p.dataset.id === id); });
+      lista.querySelectorAll('button').forEach(function(b){ b.classList.toggle('activa', b.dataset.id === id); });
     }
 
-    items.push({L,c,img,aLeft,aTop,rot,labelEl});
-  });
+    raiz.querySelectorAll('.pieza').forEach(function(p){
+      p.addEventListener('click', function(){ mostrar(p.dataset.id); });
+      p.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); mostrar(p.dataset.id); }
+      });
+    });
 
-  const DUR=0.52;                 // scroll fraction each part takes
-  const ZOOM=2.0;                 // camera zoom at assembled state
+    Object.keys(datos).forEach(function(id){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.dataset.id = id;
+      b.textContent = datos[id].n + ' · ' + datos[id].nombre;
+      b.addEventListener('click', function(){ mostrar(id); });
+      lista.appendChild(b);
+    });
 
-  let vw=innerWidth, vh=innerHeight, fit=1;
-  function resize(){
-    vw=innerWidth; vh=innerHeight;
-    fit=Math.min((vw*0.94)/CW, (vh*0.955)/CH);
+    mostrar(inicial);
   }
-  resize(); addEventListener('resize',resize);
 
-  const sec=document.getElementById('teardown');
-  const hero3d=document.getElementById('hero3d');
-  const FADE=0.13;                // scroll fraction over which the front photo dissolves
-  const bar=document.getElementById('bar');
-  const capK=document.getElementById('capK'), capT=document.getElementById('capT');
+  /* marcas de la esfera del diagrama externo */
+  var me = document.getElementById('marcasEsfera');
+  for (var i = 0; i < 12; i++){
+    var l = document.createElementNS('http://www.w3.org/2000/svg','line');
+    l.setAttribute('x1',190); l.setAttribute('x2',190);
+    l.setAttribute('y1',162); l.setAttribute('y2', i % 3 === 0 ? 180 : 174);
+    l.setAttribute('class','cuerpo');
+    l.setAttribute('style','stroke-width:' + (i % 3 === 0 ? 3 : 1.4));
+    l.setAttribute('transform','rotate(' + (i * 30) + ' 190 250)');
+    me.appendChild(l);
+  }
 
-  const CAPS=[
-    [0.00,'El reloj, ensamblado','Cada detalle en su lugar'],
-    [0.16,'Se separan las capas','24 componentes'],
-    [0.50,'Explosión ordenada','Del bisel a la tapa'],
-    [0.86,'Vista de despiece','Armani Exchange · AX2145'],
-  ];
-  let curCap=-1;
+  conectar(EXTERIOR,  'fx', '#exterior .plano svg',   'bisel');
+  conectar(MOVIMIENTO,'fm', '#movimiento .plano svg', 'rotor');
 
-  function frame(){
-    const r=sec.getBoundingClientRect();
-    const total=r.height - vh;
-    let p = clamp((-r.top)/total, 0, 1);
-
-    // camera: zoom from ACX/ACY (in) to canvas center (out)
-    const pc=easeIO(p);
-    const camScale = fit * lerp(ZOOM,1,pc);
-    const Fx=lerp(ACX,CX,pc), Fy=lerp(ACY,CY,pc);
-    const tx=vw/2 - Fx*camScale, ty=vh/2 - Fy*camScale;
-    canvas.style.transform=`translate(${tx}px,${ty}px) scale(${camScale})`;
-
-    // dissolve the real front photo into the exploding stack
-    const hf = clamp(1 - p/FADE, 0, 1);
-    hero3d.style.opacity = hf.toFixed(3);
-    hero3d.style.transform = `translate(-50%,-50%) scale(${(1+(1-hf)*0.06).toFixed(3)})`;
-    hero3d.style.visibility = hf<=0 ? 'hidden' : 'visible';
-
-    // per-part
-    for(const it of items){
-      const {L,c,img}=it;
-      const start=c.o*(1-DUR);
-      const e=easeIO(clamp((p-start)/DUR,0,1));   // 0 assembled -> 1 exploded
-      const inv=1-e;
-      const dx=(it.aLeft-L.x)*inv;
-      const dy=(it.aTop -L.y)*inv;
-      const s = lerp(1.05,1.0,e);
-      const rot = it.rot*inv;
-      img.style.transform=`translate3d(${dx}px,${dy}px,0) scale(${s}) rotate(${rot}deg)`;
-      // main parts stay opaque (revealed by occlusion → reads as 3D, not stacked cutouts);
-      // only tiny screws materialise as they fly out
-      const base = c.baseOp!==undefined ? c.baseOp : 1;
-      const isScrew = L.name.indexOf('screw')===0;
-      img.style.opacity = (isScrew ? clamp(e*1.8,0,1)*base : base).toFixed(3);
-
-      // labels (screen space)
-      if(it.labelEl){
-        const show = e>0.72;
-        it.labelEl.style.opacity = show ? clamp((e-0.72)/0.2,0,1).toFixed(3) : 0;
-        if(show){
-          const cr=canvas.getBoundingClientRect();
-          const px=cr.left + (L.cx/CW)*cr.width;
-          const py=cr.top  + (L.cy/CH)*cr.height;
-          const right = L.cx < CW*0.52;      // point on left half -> label to the right
-          it.labelEl.classList.toggle('left',!right);
-          const off = right? 26 : -26;
-          it.labelEl.style.left=(px+off)+'px';
-          it.labelEl.style.top=py+'px';
-          it.labelEl.style.transform= right?'translateY(-50%)':'translate(-100%,-50%)';
+  /* índice: resaltar la sección visible */
+  var enlaces = document.querySelectorAll('.indice a');
+  var secciones = Array.prototype.map.call(enlaces, function(a){ return document.querySelector(a.getAttribute('href')); });
+  if ('IntersectionObserver' in window){
+    var obs = new IntersectionObserver(function(entradas){
+      entradas.forEach(function(e){
+        if (e.isIntersecting){
+          var i = secciones.indexOf(e.target);
+          enlaces.forEach(function(a,j){ a.classList.toggle('activo', j === i); });
         }
-      }
-    }
-
-    bar.style.width=(p*100).toFixed(1)+'%';
-
-    // caption band
-    let ci=0; for(let i=0;i<CAPS.length;i++){ if(p>=CAPS[i][0]) ci=i; }
-    if(ci!==curCap){ curCap=ci;
-      capK.style.opacity=0; capT.style.opacity=0;
-      setTimeout(()=>{capK.textContent=CAPS[ci][1]; capT.textContent=CAPS[ci][2];
-        capK.style.opacity=1; capT.style.opacity=1;},120);
-    }
-
-    requestAnimationFrame(frame);
+      });
+    }, { rootMargin:'-40% 0px -55% 0px' });
+    secciones.forEach(function(s){ if (s) obs.observe(s); });
   }
-  requestAnimationFrame(frame);
+
+  document.getElementById('anio').textContent = new Date().getFullYear();
 })();
 </script>
 </body>
