@@ -5,15 +5,22 @@ export interface Category {
   _count?: { products: number };
 }
 
+export type Gender = "MALE" | "FEMALE" | "UNISEX";
+export type Movement = "AUTOMATIC" | "QUARTZ";
+
 export interface Product {
   id: string;
   name: string;
   slug: string;
   description: string;
   priceCents: number;
+  previousPriceCents: number | null;
   imageUrl: string;
   images: string[];
   stock: number;
+  brand: string | null;
+  gender: Gender | null;
+  movement: Movement | null;
   categoryId: string;
   category: Category;
   createdAt: string;

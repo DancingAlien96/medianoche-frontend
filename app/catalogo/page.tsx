@@ -1,39 +1,77 @@
 import Image from "next/image";
 import Link from "next/link";
+import { CatalogFilters } from "@/components/editorial/catalog-filters";
 import { EditorialAddToCart } from "@/components/editorial/editorial-add-to-cart";
 import { EditorialBar } from "@/components/editorial/editorial-bar";
 import { EditorialFooter } from "@/components/editorial/editorial-footer";
-import { getCategories, getProducts } from "@/lib/api";
+import { getFacets, getProducts } from "@/lib/api";
+import { getCategories } from "@/lib/api";
 import { formatPrice } from "@/lib/money";
+import { priceRangeByKey } from "@/lib/product-facets";
 
 const PER_PAGE = 12;
-const WHATSAPP_URL = "https://wa.me/50233407786";
+
+function csv(v?: string): string[] {
+  return v ? v.split(",").map((s) => s.trim()).filter(Boolean) : [];
+}
 
 interface CatalogPageProps {
-  searchParams: Promise<{ q?: string; category?: string; page?: string }>;
+  searchParams: Promise<{
+    q?: string;
+    category?: string;
+    brand?: string;
+    gender?: string;
+    movement?: string;
+    price?: string;
+    page?: string;
+  }>;
 }
 
 export default async function CatalogPage({ searchParams }: CatalogPageProps) {
-  const { q, category, page } = await searchParams;
+  const sp = await searchParams;
+  const { q, category, brand, gender, movement, price, page } = sp;
   const currentPage = Number(page) > 0 ? Number(page) : 1;
+  const range = priceRangeByKey(price);
 
-  const [categories, products] = await Promise.all([
+  const [categories, facets, products] = await Promise.all([
     getCategories(),
-    // Accumulate results so "Cargar más" grows the grid.
-    getProducts({ q, category, page: 1, limit: currentPage * PER_PAGE }),
+    getFacets(),
+    getProducts({
+      q,
+      category,
+      brand,
+      gender,
+      movement,
+      minPriceCents: range ? range.min : undefined,
+      maxPriceCents: range && range.max != null ? range.max : undefined,
+      page: 1,
+      limit: currentPage * PER_PAGE,
+    }),
   ]);
 
   const items = products.items;
   const total = products.total;
   const hasMore = items.length < total;
 
-  const buildHref = (params: Record<string, string | undefined>) => {
-    const sp = new URLSearchParams();
-    if (params.q) sp.set("q", params.q);
-    if (params.category) sp.set("category", params.category);
-    if (params.page && params.page !== "1") sp.set("page", params.page);
-    const qs = sp.toString();
-    return `/catalogo${qs ? `?${qs}` : ""}`;
+  const selected = {
+    q,
+    category,
+    brands: csv(brand),
+    genders: csv(gender),
+    movements: csv(movement),
+    price,
+  };
+
+  const nextPageHref = () => {
+    const params = new URLSearchParams();
+    if (q) params.set("q", q);
+    if (category) params.set("category", category);
+    if (brand) params.set("brand", brand);
+    if (gender) params.set("gender", gender);
+    if (movement) params.set("movement", movement);
+    if (price) params.set("price", price);
+    params.set("page", String(currentPage + 1));
+    return `/catalogo?${params.toString()}`;
   };
 
   return (
@@ -59,92 +97,103 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
       </div>
 
       <div className="cuerpo-cat">
-        {/* Filtros por categoría (reales) */}
-        <div className="filtros-cat">
-          <Link
-            href={buildHref({ q })}
-            className={`filtro-chip ${!category ? "activo" : ""}`}
-          >
-            Todas
-          </Link>
-          {categories.map((cat) => (
-            <Link
-              key={cat.id}
-              href={buildHref({ q, category: cat.slug })}
-              className={`filtro-chip ${category === cat.slug ? "activo" : ""}`}
-            >
-              {cat.name}
-            </Link>
-          ))}
-        </div>
+        <div className="dist-cat">
+          <CatalogFilters
+            categories={categories.map((c) => ({
+              slug: c.slug,
+              name: c.name,
+              count: c._count?.products,
+            }))}
+            brands={facets.brands}
+            selected={selected}
+          />
 
-        {/* Cuadrícula */}
-        {items.length === 0 ? (
-          <div className="rejilla">
-            <div className="vacio">
-              <h3>Sin resultados</h3>
-              <p>
-                Ninguna pieza coincide con esa búsqueda. Puede pedirnos la
-                referencia directamente.
-              </p>
-              <Link className="btn" href="/requerimiento">
-                Hacer un requerimiento{" "}
-                <span className="flecha" aria-hidden="true">→</span>
-              </Link>
-            </div>
-          </div>
-        ) : (
-          <div className="rejilla">
-            {items.map((p) => {
-              const agotado = p.stock <= 0;
-              return (
-                <article
-                  key={p.id}
-                  className={`pieza${agotado ? " sin-stock" : ""}`}
-                >
-                  <Link href={`/products/${p.id}`} className="lienzo">
-                    {agotado && <span className="etiqueta agotado">Agotado</span>}
-                    <Image
-                      src={p.imageUrl}
-                      alt={p.name}
-                      width={400}
-                      height={400}
-                      sizes="(max-width:520px) 100vw, (max-width:1040px) 50vw, 33vw"
-                    />
+          <div>
+            {items.length === 0 ? (
+              <div className="rejilla">
+                <div className="vacio">
+                  <h3>Sin resultados</h3>
+                  <p>
+                    Ninguna pieza coincide con esos filtros. Puede quitar alguno
+                    o pedirnos la referencia directamente.
+                  </p>
+                  <Link className="btn" href="/requerimiento">
+                    Hacer un requerimiento{" "}
+                    <span className="flecha" aria-hidden="true">→</span>
                   </Link>
-                  <div className="ref">Ref. {p.id.slice(-6).toUpperCase()}</div>
-                  <h2>
-                    <Link href={`/products/${p.id}`}>{p.name}</Link>
-                  </h2>
-                  <div className="meta">{p.category.name}</div>
-                  <div className="pie-pieza">
-                    <span className="precio">{formatPrice(p.priceCents)}</span>
-                    <EditorialAddToCart productId={p.id} disabled={agotado} />
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        )}
+                </div>
+              </div>
+            ) : (
+              <div className="rejilla">
+                {items.map((p) => {
+                  const agotado = p.stock <= 0;
+                  const rebaja =
+                    p.previousPriceCents != null &&
+                    p.previousPriceCents > p.priceCents;
+                  return (
+                    <article
+                      key={p.id}
+                      className={`pieza${agotado ? " sin-stock" : ""}`}
+                    >
+                      <Link href={`/products/${p.id}`} className="lienzo">
+                        {agotado ? (
+                          <span className="etiqueta agotado">Agotado</span>
+                        ) : rebaja ? (
+                          <span className="etiqueta">Rebaja</span>
+                        ) : null}
+                        <Image
+                          src={p.imageUrl}
+                          alt={p.name}
+                          width={400}
+                          height={400}
+                          sizes="(max-width:520px) 100vw, (max-width:1040px) 50vw, 33vw"
+                        />
+                      </Link>
+                      <div className="ref">
+                        {p.brand ?? `Ref. ${p.id.slice(-6).toUpperCase()}`}
+                      </div>
+                      <h2>
+                        <Link href={`/products/${p.id}`}>{p.name}</Link>
+                      </h2>
+                      <div className="meta">{p.category.name}</div>
+                      <div className="pie-pieza">
+                        <span className="precio">
+                          {rebaja && (
+                            <s
+                              style={{
+                                color: "var(--gris)",
+                                fontSize: 11,
+                                marginRight: 6,
+                              }}
+                            >
+                              {formatPrice(p.previousPriceCents!)}
+                            </s>
+                          )}
+                          {formatPrice(p.priceCents)}
+                        </span>
+                        <EditorialAddToCart
+                          productId={p.id}
+                          disabled={agotado}
+                        />
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            )}
 
-        {hasMore && (
-          <div className="mas">
-            <Link
-              className="btn"
-              href={buildHref({
-                q,
-                category,
-                page: String(currentPage + 1),
-              })}
-            >
-              Cargar más piezas{" "}
-              <span className="flecha" aria-hidden="true">↓</span>
-            </Link>
+            {hasMore && (
+              <div className="mas">
+                <Link className="btn" href={nextPageHref()}>
+                  Cargar más piezas{" "}
+                  <span className="flecha" aria-hidden="true">↓</span>
+                </Link>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
 
-      {/* ===================== ENCARGO ===================== */}
       <section className="encargo">
         <span className="eyebrow">¿No encuentra lo que busca?</span>
         <h2>Localizamos la referencia por usted</h2>

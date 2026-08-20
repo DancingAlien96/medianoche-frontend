@@ -67,6 +67,11 @@ async function extractError(res: Response): Promise<string> {
 export interface ProductQuery {
   q?: string;
   category?: string;
+  brand?: string;
+  gender?: string;
+  movement?: string;
+  minPriceCents?: number;
+  maxPriceCents?: number;
   page?: number;
   limit?: number;
 }
@@ -75,10 +80,21 @@ export function getProducts(query: ProductQuery = {}): Promise<ProductsResponse>
   const params = new URLSearchParams();
   if (query.q) params.set("q", query.q);
   if (query.category) params.set("category", query.category);
+  if (query.brand) params.set("brand", query.brand);
+  if (query.gender) params.set("gender", query.gender);
+  if (query.movement) params.set("movement", query.movement);
+  if (query.minPriceCents != null)
+    params.set("minPriceCents", String(query.minPriceCents));
+  if (query.maxPriceCents != null)
+    params.set("maxPriceCents", String(query.maxPriceCents));
   if (query.page) params.set("page", String(query.page));
   if (query.limit) params.set("limit", String(query.limit));
   const qs = params.toString();
   return apiFetch<ProductsResponse>(`/products${qs ? `?${qs}` : ""}`);
+}
+
+export function getFacets(): Promise<{ brands: string[] }> {
+  return apiFetch<{ brands: string[] }>("/products/facets");
 }
 
 export async function getProduct(id: string): Promise<Product | null> {
@@ -210,9 +226,13 @@ export interface ProductInput {
   name: string;
   description: string;
   priceCents: number;
+  previousPriceCents?: number;
   images: string[];
   stock: number;
   categoryId: string;
+  brand?: string;
+  gender?: string;
+  movement?: string;
 }
 
 export function createProduct(
