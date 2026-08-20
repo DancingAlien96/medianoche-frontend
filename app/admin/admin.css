@@ -1,0 +1,147 @@
+/* =====================================================================
+   Admin panel — editorial black & white. Scoped under .adm.
+   Fonts come from the next/font CSS variables set on <html>.
+   ===================================================================== */
+
+.adm {
+  --negro: #000;
+  --papel: #fff;
+  --humo: #f4f4f4;
+  --gris: #8c8c8c;
+  --linea: #e0e0e0;
+  --rojo: #b23b2e;
+  --serif: var(--font-bodoni), Georgia, serif;
+  --sans: var(--font-archivo), system-ui, sans-serif;
+  --mono: var(--font-space-mono), ui-monospace, monospace;
+
+  background: var(--papel);
+  color: var(--negro);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+/* Base resets (box-sizing, margin, border:0, link inherit) come from Tailwind's
+   global preflight — so we don't re-declare element-level resets here, which
+   would otherwise clobber the Tailwind-styled admin subpages. */
+.adm .eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gris); }
+/* Form controls inherit the panel's type instead of the browser default. */
+.adm input, .adm select, .adm textarea, .adm button { font-family: inherit; }
+.adm button { cursor: pointer; }
+.adm button:disabled { cursor: not-allowed; opacity: 0.5; }
+
+/* ---------- BARRA ---------- */
+.adm .barra { border-bottom: 1px solid var(--linea); }
+.adm .barra-in { max-width: 1400px; margin: 0 auto; padding: 0 28px; height: 72px; display: flex; align-items: center; gap: 24px; }
+.adm .marca { font-family: var(--serif); font-size: 24px; letter-spacing: 0.06em; display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+.adm .pastilla { margin-left: auto; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: var(--gris); display: flex; align-items: center; gap: 8px; }
+.adm .barra .salir { display: flex; align-items: center; gap: 6px; font-size: 12px; letter-spacing: 0.06em; color: var(--gris); }
+.adm .barra .salir:hover { color: var(--negro); }
+
+/* ---------- SUB-BARRA ---------- */
+.adm .subbarra { border-bottom: 1px solid var(--linea); }
+.adm .subbarra-in { max-width: 1400px; margin: 0 auto; padding: 22px 28px 0; display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+.adm .subbarra h1 { font-family: var(--serif); font-weight: 400; font-size: 24px; }
+.adm .pestanas { display: flex; gap: 2px; }
+.adm .pestana { font-size: 13px; padding: 12px 16px; border-bottom: 2px solid transparent; color: var(--gris); transition: color 0.2s, border-color 0.2s; }
+.adm .pestana:hover { color: var(--negro); }
+.adm .pestana.activa { color: var(--negro); border-color: var(--negro); font-weight: 500; }
+.adm .volver { font-size: 12px; letter-spacing: 0.08em; display: flex; align-items: center; gap: 6px; padding-bottom: 14px; color: var(--gris); }
+.adm .volver:hover { color: var(--negro); }
+@media (max-width: 760px) { .adm .subbarra-in { flex-direction: column; align-items: flex-start; gap: 14px; } .adm .pestanas { overflow-x: auto; width: 100%; } }
+
+.adm .envoltorio { max-width: 1400px; margin: 0 auto; padding: 34px 28px 100px; }
+
+/* ---------- BOTONES ---------- */
+.adm .btn { display: inline-flex; align-items: center; gap: 10px; height: 44px; padding: 0 20px; border: 1px solid var(--negro); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; transition: background 0.2s, color 0.2s; }
+.adm .btn-solido { background: var(--negro); color: var(--papel); }
+.adm .btn-solido:hover { background: #222; }
+.adm .btn-linea:hover { background: var(--negro); color: var(--papel); }
+.adm .btn-fantasma { border-color: var(--linea); color: var(--gris); }
+.adm .btn-fantasma:hover { border-color: var(--negro); color: var(--negro); }
+
+/* ---------- TOPE ---------- */
+.adm .tope { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 26px; flex-wrap: wrap; }
+.adm .tope h2 { font-family: var(--serif); font-weight: 400; font-size: 26px; }
+
+/* ---------- LISTA DE PRODUCTOS ---------- */
+.adm .distribucion { display: grid; grid-template-columns: 230px 1fr; gap: 44px; align-items: start; }
+@media (max-width: 900px) { .adm .distribucion { grid-template-columns: 1fr; gap: 24px; } }
+.adm .filtros { border-top: 1px solid var(--negro); padding-top: 20px; position: sticky; top: 20px; }
+@media (max-width: 900px) { .adm .filtros { position: static; } }
+.adm .grupo { border-bottom: 1px solid var(--linea); padding: 0 0 16px; margin-bottom: 16px; }
+.adm .grupo:last-of-type { border-bottom: none; }
+.adm .grupo h3 { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gris); margin-bottom: 12px; }
+.adm .opcion { display: flex; align-items: center; gap: 9px; padding: 5px 0; font-size: 13px; cursor: pointer; }
+.adm .opcion:hover { opacity: 0.65; }
+.adm .opcion input { position: absolute; opacity: 0; width: 0; height: 0; }
+.adm .caja { width: 12px; height: 12px; border: 1px solid var(--negro); flex: none; position: relative; }
+.adm .opcion input:checked + .caja { background: var(--negro); }
+.adm .opcion input:checked + .caja::after { content: ""; position: absolute; inset: 2.5px; border-left: 1px solid #fff; border-bottom: 1px solid #fff; transform: rotate(-45deg) translate(1px, -1px); width: 5px; height: 2.5px; }
+.adm .opcion .n { margin-left: auto; font-family: var(--mono); font-size: 10px; color: var(--gris); }
+.adm .selector-orden { border: none; border-bottom: 1px solid var(--linea); padding: 8px 2px; font-size: 13px; width: 100%; background: none; }
+.adm .limpiar-filtros { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; border-bottom: 1px solid var(--negro); padding-bottom: 2px; }
+
+.adm .lista { border-top: 1px solid var(--negro); }
+.adm .fila { display: grid; grid-template-columns: 56px 1fr auto auto auto; gap: 20px; align-items: center; padding: 16px 6px; border-bottom: 1px solid var(--linea); transition: background 0.2s; }
+.adm .fila:hover { background: var(--humo); }
+.adm .fila .miniatura { width: 56px; height: 56px; border: 1px solid var(--linea); background: var(--humo); overflow: hidden; position: relative; }
+.adm .fila .miniatura img { width: 100%; height: 100%; object-fit: cover; }
+.adm .fila .nombre { font-weight: 500; font-size: 14.5px; margin-bottom: 3px; }
+.adm .fila .meta { font-size: 12px; color: var(--gris); }
+.adm .fila .meta span { color: var(--negro); }
+.adm .estado-pill { font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 8px; border: 1px solid var(--linea); white-space: nowrap; color: var(--gris); }
+.adm .estado-pill.disponible { border-color: var(--negro); color: var(--negro); }
+.adm .estado-pill.agotado { color: var(--rojo); border-color: var(--rojo); }
+.adm .fila .precio { font-family: var(--mono); font-size: 13px; white-space: nowrap; }
+.adm .fila .acciones { display: flex; gap: 8px; }
+.adm .icon-btn { display: flex; align-items: center; gap: 6px; font-size: 11px; letter-spacing: 0.06em; border: 1px solid var(--linea); padding: 7px 11px; white-space: nowrap; transition: border-color 0.2s, color 0.2s; }
+.adm .icon-btn:hover { border-color: var(--negro); }
+.adm .icon-btn.borrar:hover { border-color: var(--rojo); color: var(--rojo); }
+@media (max-width: 760px) { .adm .fila { grid-template-columns: 44px 1fr; gap: 12px; row-gap: 8px; } .adm .fila .estado-pill, .adm .fila .precio, .adm .fila .acciones { grid-column: 2; justify-self: start; } }
+
+.adm .vacio-lista { padding: 80px 20px; text-align: center; border-top: 1px solid var(--negro); }
+.adm .vacio-lista h3 { font-family: var(--serif); font-weight: 400; font-size: 22px; margin-bottom: 8px; }
+.adm .vacio-lista p { color: var(--gris); font-size: 13px; margin-bottom: 20px; }
+
+/* ---------- FORMULARIO ---------- */
+.adm .vista-form { max-width: 980px; }
+.adm .form-sub { color: var(--gris); font-size: 13px; margin-bottom: 34px; }
+.adm .bloque { border-top: 1px solid var(--negro); padding: 26px 0 34px; }
+.adm .bloque h3 { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gris); margin-bottom: 20px; }
+.adm .rejilla-campos { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 28px; }
+.adm .rejilla-campos.tres { grid-template-columns: 1fr 1fr 1fr; }
+@media (max-width: 680px) { .adm .rejilla-campos, .adm .rejilla-campos.tres { grid-template-columns: 1fr; } }
+.adm .campo { display: flex; flex-direction: column; gap: 8px; }
+.adm .campo.ancho { grid-column: 1 / -1; }
+.adm .campo label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gris); }
+.adm .campo input[type="text"], .adm .campo input[type="number"], .adm .campo select, .adm .campo textarea { border: none; border-bottom: 1px solid var(--linea); padding: 9px 2px; font-size: 14.5px; background: none; transition: border-color 0.2s; width: 100%; }
+.adm .campo input:focus, .adm .campo select:focus, .adm .campo textarea:focus { outline: none; border-color: var(--negro); }
+.adm .campo textarea { resize: vertical; min-height: 90px; font-family: var(--sans); }
+.adm .campo select { cursor: pointer; }
+.adm .prefijo-precio { position: relative; }
+.adm .prefijo-precio::before { content: "Q"; position: absolute; left: 2px; top: 9px; color: var(--gris); font-family: var(--mono); font-size: 13px; }
+.adm .prefijo-precio input { padding-left: 16px; }
+
+.adm .foto-zona { display: flex; flex-wrap: wrap; gap: 12px; }
+.adm .foto-item { width: 104px; height: 104px; border: 1px solid var(--linea); position: relative; background: var(--humo); overflow: hidden; }
+.adm .foto-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.adm .foto-item .quitar { position: absolute; top: 4px; right: 4px; width: 20px; height: 20px; background: var(--papel); border: 1px solid var(--negro); display: flex; align-items: center; justify-content: center; font-size: 11px; line-height: 1; }
+.adm .foto-item .quitar:hover { background: var(--negro); color: var(--papel); }
+.adm .foto-item .principal-marca { position: absolute; bottom: 0; left: 0; right: 0; background: var(--negro); color: var(--papel); font-family: var(--mono); font-size: 8px; letter-spacing: 0.1em; text-align: center; padding: 3px 0; text-transform: uppercase; }
+.adm .foto-item.es-principal { border-color: var(--negro); border-width: 2px; }
+.adm .foto-item .hacer-principal { position: absolute; inset: 0; cursor: pointer; }
+.adm .foto-add { width: 104px; height: 104px; border: 1px dashed var(--gris); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: var(--gris); cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+.adm .foto-add:hover { border-color: var(--negro); color: var(--negro); }
+.adm .foto-add span { font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; }
+.adm .ayuda-fotos { font-size: 11px; color: var(--gris); margin-top: 12px; }
+
+.adm .form-acciones { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-top: 30px; border-top: 1px solid var(--linea); flex-wrap: wrap; }
+.adm .form-acciones .der { display: flex; gap: 12px; }
+.adm .aviso-error { border: 1px solid var(--rojo); color: var(--rojo); padding: 10px 14px; font-size: 13px; margin-bottom: 20px; }
+
+/* ---------- CATEGORÍAS / GENÉRICO ---------- */
+.adm .panel { border-top: 1px solid var(--negro); padding-top: 4px; }
+.adm .placeholder-vista { padding: 60px 20px; text-align: center; border-top: 1px solid var(--negro); }
+.adm .placeholder-vista h3 { font-family: var(--serif); font-weight: 400; font-size: 24px; margin-bottom: 8px; }
+.adm .placeholder-vista p { color: var(--gris); font-size: 13px; }

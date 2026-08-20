@@ -14,7 +14,8 @@ function isEditorial(pathname: string): boolean {
   return (
     EDITORIAL.includes(pathname) ||
     pathname.startsWith("/catalogo/") ||
-    pathname.startsWith("/nosotros/")
+    pathname.startsWith("/nosotros/") ||
+    pathname.startsWith("/admin")
   );
 }
 

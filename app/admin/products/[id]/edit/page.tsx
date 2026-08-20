@@ -18,14 +18,17 @@ export default async function EditProductPage({
   if (!product) notFound();
 
   return (
-    <div className="max-w-2xl">
-      <h2 className="text-xl font-semibold mb-4">Editar producto</h2>
+    <section className="vista-form">
+      <div className="tope">
+        <h2>Editar producto</h2>
+      </div>
+      <p className="form-sub">Actualice la información y guarde los cambios.</p>
       <ProductForm
         categories={categories}
         action={updateProductAction}
         submitLabel="Guardar cambios"
         product={product}
       />
-    </div>
+    </section>
   );
 }

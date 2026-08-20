@@ -6,13 +6,18 @@ export default async function NewProductPage() {
   const categories = await getCategories();
 
   return (
-    <div className="max-w-2xl">
-      <h2 className="text-xl font-semibold mb-4">Nuevo producto</h2>
+    <section className="vista-form">
+      <div className="tope">
+        <h2>Nuevo producto</h2>
+      </div>
+      <p className="form-sub">
+        Complete la información y guarde para publicarlo en la tienda.
+      </p>
       <ProductForm
         categories={categories}
         action={createProductAction}
-        submitLabel="Crear producto"
+        submitLabel="Guardar producto"
       />
-    </div>
+    </section>
   );
 }

@@ -32,6 +32,10 @@ function parseProduct(formData: FormData): ProductInput | { error: string } {
   const price = Number(formData.get("price"));
   const stock = Number(formData.get("stock"));
   const categoryId = String(formData.get("categoryId") ?? "");
+  const brand = String(formData.get("brand") ?? "").trim();
+  const gender = String(formData.get("gender") ?? "");
+  const movement = String(formData.get("movement") ?? "");
+  const previousRaw = String(formData.get("previousPrice") ?? "").trim();
 
   let images: string[] = [];
   try {
@@ -56,14 +60,30 @@ function parseProduct(formData: FormData): ProductInput | { error: string } {
     return { error: "El stock no es válido." };
   }
 
-  return {
+  const previous = previousRaw ? Number(previousRaw) : NaN;
+  const input: ProductInput = {
     name,
     description,
     priceCents: Math.round(price * 100),
     stock,
     categoryId,
     images,
+    // Empty string clears brand on the backend (service maps "" → null).
+    brand,
+    // 0 → backend treats as "no sale price".
+    previousPriceCents:
+      Number.isFinite(previous) && previous > 0
+        ? Math.round(previous * 100)
+        : 0,
   };
+  // Enums must be valid values or omitted (empty is rejected by the API).
+  if (gender === "MALE" || gender === "FEMALE" || gender === "UNISEX") {
+    input.gender = gender;
+  }
+  if (movement === "AUTOMATIC" || movement === "QUARTZ") {
+    input.movement = movement;
+  }
+  return input;
 }
 
 function revalidateProducts() {

@@ -1,8 +1,7 @@
 "use client";
 
-import { Star, X } from "lucide-react";
-import { useActionState, useState } from "react";
-import { WatchSpinner } from "@/components/ui/watch-spinner";
+import Link from "next/link";
+import { useActionState, useRef, useState } from "react";
 import { uploadImageAction, type AdminState } from "@/lib/admin-actions";
 import type { Category, Product } from "@/lib/types";
 
@@ -12,9 +11,6 @@ interface Props {
   submitLabel: string;
   product?: Product;
 }
-
-const inputClass =
-  "h-11 rounded-lg border border-border bg-surface-2 px-3 outline-none focus:border-accent transition-colors";
 
 function initialImages(product?: Product): string[] {
   if (product?.images?.length) return product.images;
@@ -32,6 +28,7 @@ export function ProductForm({
   const [images, setImages] = useState<string[]>(initialImages(product));
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   async function handleFiles(event: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(event.target.files ?? []);
@@ -46,9 +43,7 @@ export function ProductForm({
         setUploadError(result.error);
         break;
       }
-      if (result.url) {
-        setImages((prev) => [...prev, result.url as string]);
-      }
+      if (result.url) setImages((prev) => [...prev, result.url as string]);
     }
     setUploading(false);
     event.target.value = "";
@@ -65,151 +60,218 @@ export function ProductForm({
     });
 
   return (
-    <form action={formAction} className="flex flex-col gap-4">
+    <form action={formAction} className="vista-form">
       {product && <input type="hidden" name="id" value={product.id} />}
       <input type="hidden" name="images" value={JSON.stringify(images)} />
 
-      {state.error && (
-        <p className="rounded-lg border border-danger/40 bg-danger/10 px-3 py-2 text-sm text-danger">
-          {state.error}
-        </p>
-      )}
+      {state.error && <p className="aviso-error">{state.error}</p>}
 
-      <label className="flex flex-col gap-1 text-sm">
-        <span className="text-muted">Nombre</span>
-        <input
-          name="name"
-          required
-          minLength={2}
-          defaultValue={product?.name}
-          className={inputClass}
-        />
-      </label>
-
-      <label className="flex flex-col gap-1 text-sm">
-        <span className="text-muted">Descripción</span>
-        <textarea
-          name="description"
-          required
-          rows={3}
-          defaultValue={product?.description}
-          className="rounded-lg border border-border bg-surface-2 px-3 py-2 outline-none focus:border-accent transition-colors resize-y"
-        />
-      </label>
-
-      <div className="grid grid-cols-2 gap-4">
-        <label className="flex flex-col gap-1 text-sm">
-          <span className="text-muted">Precio (Q)</span>
-          <input
-            name="price"
-            type="number"
-            step="0.01"
-            min="0"
-            required
-            defaultValue={product ? product.priceCents / 100 : ""}
-            className={inputClass}
-          />
-        </label>
-        <label className="flex flex-col gap-1 text-sm">
-          <span className="text-muted">Stock</span>
-          <input
-            name="stock"
-            type="number"
-            min="0"
-            step="1"
-            required
-            defaultValue={product ? product.stock : 0}
-            className={inputClass}
-          />
-        </label>
-      </div>
-
-      <label className="flex flex-col gap-1 text-sm">
-        <span className="text-muted">Categoría</span>
-        <select
-          name="categoryId"
-          required
-          defaultValue={product?.categoryId ?? ""}
-          className={inputClass}
-        >
-          <option value="" disabled>
-            Selecciona una categoría
-          </option>
-          {categories.map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      <div className="flex flex-col gap-2 text-sm">
-        <span className="text-muted">
-          Imágenes{" "}
-          <span className="text-xs">(la primera es la portada)</span>
-        </span>
-
-        {images.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {images.map((url, index) => (
-              <div
-                key={`${url}-${index}`}
-                className="relative w-20 h-20 rounded-lg overflow-hidden border border-border bg-surface-2"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={url}
-                  alt=""
-                  className="w-full h-full object-cover"
-                />
-                {index === 0 ? (
-                  <span className="absolute bottom-0 inset-x-0 bg-accent text-accent-foreground text-[10px] text-center py-0.5">
-                    Portada
-                  </span>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => makeCover(index)}
-                    title="Hacer portada"
-                    aria-label="Hacer portada"
-                    className="absolute bottom-0.5 left-0.5 rounded bg-background/80 p-1 hover:text-accent"
-                  >
-                    <Star className="w-3 h-3" />
-                  </button>
-                )}
+      {/* Fotografías */}
+      <div className="bloque">
+        <h3>Fotografías</h3>
+        <div className="foto-zona">
+          {images.map((url, index) => (
+            <div
+              key={`${url}-${index}`}
+              className={`foto-item${index === 0 ? " es-principal" : ""}`}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={url} alt="" />
+              {index !== 0 && (
                 <button
                   type="button"
-                  onClick={() => removeImage(index)}
-                  title="Quitar"
-                  aria-label="Quitar imagen"
-                  className="absolute top-0.5 right-0.5 rounded-full bg-background/80 p-0.5 hover:text-danger"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-
+                  className="hacer-principal"
+                  title="Hacer principal"
+                  aria-label="Hacer principal"
+                  onClick={() => makeCover(index)}
+                />
+              )}
+              <button
+                type="button"
+                className="quitar"
+                aria-label="Quitar foto"
+                onClick={() => removeImage(index)}
+              >
+                ✕
+              </button>
+              {index === 0 && <span className="principal-marca">Principal</span>}
+            </div>
+          ))}
+          <button
+            type="button"
+            className="foto-add"
+            onClick={() => fileRef.current?.click()}
+          >
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.3" aria-hidden="true">
+              <path d="M10 3v14M3 10h14" />
+            </svg>
+            <span>Agregar foto</span>
+          </button>
+        </div>
         <input
+          ref={fileRef}
           type="file"
           accept="image/*"
           multiple
           onChange={handleFiles}
-          className="text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-surface-2 file:px-3 file:py-2 file:text-foreground hover:file:bg-border"
+          style={{ display: "none" }}
         />
-        {uploading && <p className="text-muted">Subiendo imágenes...</p>}
-        {uploadError && <p className="text-danger">{uploadError}</p>}
+        <p className="ayuda-fotos">
+          La primera foto es la portada del catálogo. Haga clic en cualquier otra
+          para hacerla principal.
+          {uploading && " Subiendo imágenes…"}
+          {uploadError && ` ${uploadError}`}
+        </p>
       </div>
 
-      <button
-        type="submit"
-        disabled={pending || uploading || images.length === 0}
-        className="h-11 flex items-center justify-center gap-2 rounded-lg bg-accent font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50 transition-colors"
-      >
-        {pending && <WatchSpinner className="w-4 h-4" />}
-        {pending ? "Guardando..." : submitLabel}
-      </button>
+      {/* Datos generales */}
+      <div className="bloque">
+        <h3>Datos generales</h3>
+        <div className="rejilla-campos">
+          <div className="campo ancho">
+            <label htmlFor="campoNombre">Nombre del producto</label>
+            <input
+              id="campoNombre"
+              type="text"
+              name="name"
+              required
+              minLength={2}
+              defaultValue={product?.name}
+              placeholder="Ej. Reloj Cronógrafo Fenmore (Metal)"
+            />
+          </div>
+
+          <div className="campo">
+            <label htmlFor="campoMarca">Marca</label>
+            <input
+              id="campoMarca"
+              type="text"
+              name="brand"
+              defaultValue={product?.brand ?? ""}
+              placeholder="Ej. Armani Exchange"
+            />
+          </div>
+          <div className="campo">
+            <label htmlFor="campoCategoria">Categoría</label>
+            <select
+              id="campoCategoria"
+              name="categoryId"
+              required
+              defaultValue={product?.categoryId ?? ""}
+            >
+              <option value="" disabled>
+                Seleccione…
+              </option>
+              {categories.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="campo">
+            <label htmlFor="campoGenero">Para quién</label>
+            <select
+              id="campoGenero"
+              name="gender"
+              defaultValue={product?.gender ?? ""}
+            >
+              <option value="">— Sin especificar —</option>
+              <option value="MALE">Para él</option>
+              <option value="FEMALE">Para ella</option>
+              <option value="UNISEX">Unisex</option>
+            </select>
+          </div>
+          <div className="campo">
+            <label htmlFor="campoMovimiento">Movimiento</label>
+            <select
+              id="campoMovimiento"
+              name="movement"
+              defaultValue={product?.movement ?? ""}
+            >
+              <option value="">— Sin especificar —</option>
+              <option value="AUTOMATIC">Automático</option>
+              <option value="QUARTZ">Clásico de cuarzo</option>
+            </select>
+          </div>
+
+          <div className="campo">
+            <label htmlFor="campoStock">Existencia</label>
+            <input
+              id="campoStock"
+              type="number"
+              name="stock"
+              min={0}
+              step={1}
+              required
+              defaultValue={product ? product.stock : 1}
+            />
+          </div>
+          <div className="campo">
+            <label htmlFor="campoPrecio">Precio</label>
+            <div className="prefijo-precio">
+              <input
+                id="campoPrecio"
+                type="number"
+                name="price"
+                min={0}
+                step="0.01"
+                required
+                defaultValue={product ? product.priceCents / 100 : ""}
+                placeholder="0"
+              />
+            </div>
+          </div>
+          <div className="campo">
+            <label htmlFor="campoPrecioAntes">
+              Precio anterior{" "}
+              <span style={{ textTransform: "none" }}>(opcional, rebaja)</span>
+            </label>
+            <div className="prefijo-precio">
+              <input
+                id="campoPrecioAntes"
+                type="number"
+                name="previousPrice"
+                min={0}
+                step="0.01"
+                defaultValue={
+                  product?.previousPriceCents
+                    ? product.previousPriceCents / 100
+                    : ""
+                }
+                placeholder="0"
+              />
+            </div>
+          </div>
+
+          <div className="campo ancho">
+            <label htmlFor="campoDescripcion">Descripción</label>
+            <textarea
+              id="campoDescripcion"
+              name="description"
+              required
+              defaultValue={product?.description}
+              placeholder="Descripción breve para la ficha del producto…"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="form-acciones">
+        <Link className="btn btn-fantasma" href="/admin">
+          Cancelar
+        </Link>
+        <div className="der">
+          <button
+            type="submit"
+            className="btn btn-solido"
+            disabled={pending || uploading || images.length === 0}
+          >
+            {pending ? "Guardando…" : submitLabel}
+          </button>
+        </div>
+      </div>
     </form>
   );
 }
