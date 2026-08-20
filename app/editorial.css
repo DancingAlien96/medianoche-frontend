@@ -278,3 +278,38 @@
   .ed #segundos { transition: none; }
   .ed .rev { opacity: 1; transform: none; transition: none; }
 }
+
+/* ---------------------------------------------------------------
+   NARROW PHONES (≤ 640px) — keep everything inside the viewport.
+   Grid/flex children need min-width:0 or long words force overflow.
+   --------------------------------------------------------------- */
+.ed .fila, .ed .hito, .ed .dato, .ed .tira-item, .ed .pie-pieza { min-width: 0; }
+.ed .fila > *, .ed .hito > *, .ed .dato > *, .ed .pieza > * { min-width: 0; }
+.ed .dato dd, .ed .pieza h2, .ed .fila .nombre { overflow-wrap: anywhere; }
+
+@media (max-width: 640px) {
+  /* Top bar: tighter rails so the nav never runs off the edge. */
+  .ed .barra-in { padding: 0 16px; gap: 12px; height: 62px; }
+  .ed .marca { font-size: 19px; gap: 7px; }
+  .ed .marca svg { width: 16px; height: 16px; }
+  .ed .nav { gap: 16px; font-size: 12.5px; }
+
+  /* Section rails */
+  .ed .seccion, .ed .hoja, .ed .cuerpo-cat, .ed .info-in, .ed .contacto-in,
+  .ed .cita-in, .ed .pie-in, .ed .tira-in { padding-left: 18px; padding-right: 18px; }
+  .ed .seccion { padding-top: 56px; padding-bottom: 56px; }
+  .ed .info-in, .ed .contacto-in { padding-top: 56px; padding-bottom: 56px; }
+  .ed .cierre, .ed .encargo, .ed .cierre-claro { padding-left: 18px; padding-right: 18px; }
+
+  /* Contact list: label above value, and let long emails wrap. */
+  .ed .dato { grid-template-columns: 1fr; gap: 4px; }
+
+  /* Section header: let the "ver todo" link wrap under the title. */
+  .ed .cabecera { flex-wrap: wrap; gap: 10px; }
+  .ed .cabecera a { white-space: normal; }
+
+  /* Buttons: never wider than the rail. */
+  .ed .btn { min-width: 0; width: 100%; max-width: 320px; gap: 16px; padding: 0 18px; }
+
+  .ed .titulo-zona { gap: 12px; }
+}

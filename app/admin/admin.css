@@ -81,6 +81,8 @@
 .adm .opcion .n { margin-left: auto; font-family: var(--mono); font-size: 10px; color: var(--gris); }
 .adm .selector-orden { border: none; border-bottom: 1px solid var(--linea); padding: 8px 2px; font-size: 13px; width: 100%; background: none; }
 .adm .limpiar-filtros { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; border-bottom: 1px solid var(--negro); padding-bottom: 2px; }
+/* The filter panel is always open on desktop; a toggle takes over on phones. */
+.adm .abrir-filtros { display: none; }
 
 .adm .lista { border-top: 1px solid var(--negro); }
 .adm .fila { display: grid; grid-template-columns: 56px 1fr auto auto auto; gap: 20px; align-items: center; padding: 16px 6px; border-bottom: 1px solid var(--linea); transition: background 0.2s; }
@@ -145,3 +147,42 @@
 .adm .placeholder-vista { padding: 60px 20px; text-align: center; border-top: 1px solid var(--negro); }
 .adm .placeholder-vista h3 { font-family: var(--serif); font-weight: 400; font-size: 24px; margin-bottom: 8px; }
 .adm .placeholder-vista p { color: var(--gris); font-size: 13px; }
+
+/* ---------------------------------------------------------------
+   RESPONSIVE — the tab strip scrolls instead of widening the page.
+   Flex/grid children need min-width:0 or their content sets the width.
+   --------------------------------------------------------------- */
+.adm .subbarra-in > div { min-width: 0; max-width: 100%; }
+.adm .pestanas { min-width: 0; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+.adm .pestanas::-webkit-scrollbar { display: none; }
+.adm .pestana { flex: none; }
+.adm .fila > * { min-width: 0; }
+.adm .fila .nombre, .adm .fila .meta { overflow-wrap: anywhere; }
+
+@media (max-width: 900px) {
+  /* Collapse the filter rail so the product list stays reachable. */
+  .adm .filtros { border: 1px solid var(--linea); border-top: 1px solid var(--linea); padding: 16px; margin-bottom: 22px; }
+  .adm .abrir-filtros { display: flex; align-items: center; justify-content: space-between; width: 100%; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+  .adm .filtros-body { display: none; padding-top: 16px; }
+  .adm .filtros.abierto .filtros-body { display: block; }
+}
+
+@media (max-width: 640px) {
+  .adm .barra-in { padding: 0 16px; gap: 12px; height: 62px; }
+  .adm .marca { font-size: 19px; gap: 7px; }
+  .adm .marca svg { width: 16px; height: 16px; }
+  /* Keep the avatar glyph, drop the long "Administrador" label. */
+  .adm .pastilla { font-size: 0; gap: 0; }
+  .adm .pastilla svg { width: 18px; height: 18px; }
+  .adm .barra .salir { font-size: 0; gap: 0; }
+  .adm .barra .salir svg { width: 18px; height: 18px; }
+
+  .adm .subbarra-in { padding: 18px 16px 0; }
+  .adm .subbarra h1 { font-size: 20px; }
+  .adm .pestana { padding: 11px 12px; font-size: 12.5px; }
+  .adm .envoltorio { padding: 24px 16px 72px; }
+  .adm .btn { width: 100%; justify-content: center; }
+  .adm .tope { gap: 14px; }
+  .adm .form-acciones { flex-direction: column-reverse; align-items: stretch; }
+  .adm .form-acciones .der { flex-direction: column; }
+}

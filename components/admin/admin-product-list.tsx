@@ -26,6 +26,7 @@ export function AdminProductList({
   const [cats, setCats] = useState<string[]>([]);
   const [avail, setAvail] = useState<string[]>([]);
   const [orden, setOrden] = useState("recientes");
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [pending, startTransition] = useTransition();
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -66,7 +67,18 @@ export function AdminProductList({
 
   return (
     <div className="distribucion">
-      <aside className="filtros">
+      <aside className={`filtros${filtersOpen ? " abierto" : ""}`}>
+        <button
+          type="button"
+          className="abrir-filtros"
+          onClick={() => setFiltersOpen((o) => !o)}
+          aria-expanded={filtersOpen}
+        >
+          Filtrar
+          <span aria-hidden="true">{filtersOpen ? "–" : "+"}</span>
+        </button>
+
+        <div className="filtros-body">
         <div className="grupo">
           <h3>Categoría</h3>
           {categories.map((c) => (
@@ -128,6 +140,7 @@ export function AdminProductList({
         >
           Limpiar filtros
         </button>
+        </div>
       </aside>
 
       <div>

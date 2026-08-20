@@ -30,20 +30,20 @@ export async function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-surface/80 backdrop-blur">
-      <div className="w-full px-4 sm:px-6 lg:px-10">
+      <div className="w-full px-3 sm:px-6 lg:px-10">
         {/* Top row: logo + (inline search on desktop) + actions */}
-        <div className="h-16 flex items-center justify-between gap-4 sm:gap-8">
+        <div className="h-16 flex items-center justify-between gap-2 sm:gap-8">
           <Link
             href="/"
-            className="flex items-center gap-2 shrink-0"
+            className="flex items-center gap-1.5 sm:gap-2 min-w-0 shrink"
             aria-label="Medianoche — inicio"
           >
             <Moon
-              className="w-5 h-5 sm:w-6 sm:h-6 text-accent"
+              className="w-5 h-5 sm:w-6 sm:h-6 text-accent shrink-0"
               fill="currentColor"
               strokeWidth={1.5}
             />
-            <span className="font-serif text-xl sm:text-2xl tracking-tight">
+            <span className="font-serif text-lg sm:text-2xl tracking-tight truncate">
               Medianoche
             </span>
           </Link>
@@ -55,7 +55,7 @@ export async function Navbar() {
             </Suspense>
           </div>
 
-          <nav className="flex items-center gap-1 text-sm shrink-0">
+          <nav className="flex items-center gap-0.5 sm:gap-1 text-sm shrink-0">
             <a
               href="/anatomia/index.html"
               className="hidden md:inline-flex rounded-lg px-3 py-2 text-muted hover:bg-surface-2 hover:text-foreground transition-colors"
@@ -66,7 +66,7 @@ export async function Navbar() {
             {user?.role === "ADMIN" && (
               <Link
                 href="/admin"
-                className="rounded-lg p-2.5 text-muted hover:bg-surface-2 hover:text-foreground transition-colors"
+                className="rounded-lg p-2 sm:p-2.5 text-muted hover:bg-surface-2 hover:text-foreground transition-colors"
                 aria-label="Panel de administración"
                 title="Admin"
               >
@@ -76,7 +76,7 @@ export async function Navbar() {
 
             <Link
               href="/cart"
-              className="relative rounded-lg p-2.5 text-foreground hover:bg-surface-2 transition-colors"
+              className="relative rounded-lg p-2 sm:p-2.5 text-foreground hover:bg-surface-2 transition-colors"
               aria-label={`Carrito${count > 0 ? ` (${count})` : ""}`}
               title="Carrito"
             >
@@ -91,7 +91,7 @@ export async function Navbar() {
             {user && (
               <Link
                 href="/pedidos"
-                className="rounded-lg p-2.5 text-muted hover:bg-surface-2 hover:text-foreground transition-colors"
+                className="rounded-lg p-2 sm:p-2.5 text-muted hover:bg-surface-2 hover:text-foreground transition-colors"
                 aria-label="Mis pedidos"
                 title="Mis pedidos"
               >
@@ -107,7 +107,7 @@ export async function Navbar() {
                 <form action={logoutAction}>
                   <button
                     type="submit"
-                    className="rounded-lg p-2.5 text-muted hover:bg-surface-2 hover:text-foreground transition-colors"
+                    className="rounded-lg p-2 sm:p-2.5 text-muted hover:bg-surface-2 hover:text-foreground transition-colors"
                     aria-label="Cerrar sesión"
                     title="Salir"
                   >
